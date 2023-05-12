@@ -1,17 +1,63 @@
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
+    
+     public void conectarBD(){
+        String nombre = JOptionPane.showInputDialog("Inserta el usuario");
+        String contra = JOptionPane.showInputDialog("Inserta la contraseña");
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            conex = DriverManager.getConnection("jdbc:mysql://localhost:3306/jardineria",nombre,contra);
+        }catch(Exception ex) {
+            System.out.println(ex);
+        }
+    }
+     
+     public void actualizarTabla(){
+         try {
+             Statement st = conex.createStatement();
+             ResultSet rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
+             DefaultTableModel modelo = new DefaultTableModel();
+             
+             modelo.addColumn("id");
+             modelo.addColumn("estado");
+             modelo.addColumn("fecha creacion");
+             modelo.addColumn("fecha aproximada");
+             modelo.addColumn("fecha entrega");
+             modelo.addColumn("comentario");
+             
+             String[] result = new String[6];
+             while(rs.next()){
+                 result[0] = rs.getString(1);
+                 result[1] = rs.getString(2);
+                 result[2] = rs.getString(3);
+                 result[3] = rs.getString(4);
+                 result[4] = rs.getString(5);
+                 result[5] = rs.getString(6);
+                 modelo.addRow(result);
+             }
+             jTablePedidos.setModel(modelo);
+         } catch (SQLException ex) {
+             System.out.println(ex);
+         }
+     }
     
     private Connection conex;
     
     public VentanaPrincipal() {
         initComponents();
+        
+        conectarBD();
+        actualizarTabla();
     }
     
-    public void setConex(Connection conex){
-        this.conex = conex;
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,7 +78,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButtonEliminar1 = new javax.swing.JButton();
         jButtonActualizar = new javax.swing.JButton();
         jButtonEliminar2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,7 +117,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         jPanelNuevoPedidoLayout.setVerticalGroup(
             jPanelNuevoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 230, Short.MAX_VALUE)
+            .addGap(0, 231, Short.MAX_VALUE)
         );
 
         jButtonBuscar.setText("BUSCAR");
@@ -108,13 +153,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,8 +171,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addComponent(jButtonActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 219, Short.MAX_VALUE)
                         .addComponent(jButtonEliminar1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,9 +183,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanelNuevoPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -191,11 +226,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonEliminar2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        InicioSesion inicio = new InicioSesion();
-        inicio.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -232,7 +262,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonActualizar;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonEditar;
