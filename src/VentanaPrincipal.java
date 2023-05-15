@@ -7,6 +7,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
     
+     private Connection conex;
+     private ResultSet rs;
+    
+     //Metodo para hacer la conexion a la BASE DE DATOS
      public void conectarBD(){
         String nombre = JOptionPane.showInputDialog("Inserta el usuario");
         String contra = JOptionPane.showInputDialog("Inserta la contraseña");
@@ -19,10 +23,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
      
+     //Metodo para actualizar la tabla de pedidos
      public void actualizarTabla(){
          try {
-             Statement st = conex.createStatement();
-             ResultSet rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
+             Statement st = conex.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
              DefaultTableModel modelo = new DefaultTableModel();
              
              modelo.addColumn("id");
@@ -43,13 +48,67 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                  modelo.addRow(result);
              }
              jTablePedidos.setModel(modelo);
+             rs.beforeFirst();
          } catch (SQLException ex) {
              System.out.println(ex);
          }
      }
-    
-    private Connection conex;
-    
+     
+     //Metodo para pasar el estado de un pedido a RECIBIDO
+     public void aRecibido(int idPedido){
+         try {
+            String ssql = "UPDATE pedido SET estado='Recibido', fecha_entrega=curdate() WHERE codigo_pedido =?";
+            PreparedStatement update = conex.prepareStatement(ssql);
+            update.setInt(1, idPedido);
+            if(update.executeUpdate() > 0){
+                JOptionPane.showMessageDialog(this, "Ha sido actualizado correctamente");
+                actualizarTabla();
+            }
+                   
+         } catch (SQLException ex) {
+             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
+     }
+     
+     //Metodo para pasar el estado de un pedido a CANCELADO
+     public void aCancelado(int idPedido)   {
+         try {
+            String ssql = "UPDATE pedido SET estado='Cancelado' WHERE codigo_pedido = ?";
+            String select = "SELECT codigo_producto, cantidad FROM detalle_pedido WHERE codigo_pedido = ?";
+            String selectProd = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
+            String restablecer = "UPDATE producto SET cantidad_en_stock = ? WHERE codigo_producto = ?";
+           
+            PreparedStatement selectDetalle = conex.prepareStatement(select);
+            selectDetalle.setInt(1, idPedido);
+            ResultSet detalles = selectDetalle.executeQuery();
+            
+            PreparedStatement restab = conex.prepareStatement(restablecer);
+            PreparedStatement selectP = conex.prepareStatement(selectProd);
+            
+            while(detalles.next()){
+                String codigoP = detalles.getString(1);
+                selectP.setString(1, codigoP);
+                ResultSet productos = selectP.executeQuery();
+                productos.next();
+                int cant = detalles.getInt(2)+productos.getInt(1);
+                restab.setInt(1, cant);
+                restab.setString(2, codigoP);
+                restab.executeUpdate();
+            }
+             
+            PreparedStatement update = conex.prepareStatement(ssql);
+            update.setInt(1, idPedido);
+            
+            if(update.executeUpdate() > 0){
+                JOptionPane.showMessageDialog(this, "Ha sido cancelado correctamente");
+                actualizarTabla();
+            }    
+         } catch (SQLException ex) {
+             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
+     }
+     
+
     public VentanaPrincipal() {
         initComponents();
         
@@ -80,6 +139,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButtonEliminar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setForeground(java.awt.Color.green);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
         jLabel1.setText("PEDIDOS");
@@ -219,7 +279,41 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEliminar1ActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        // TODO add your handling code here:
+        String[] opciones = {"Recibido", "Cancelado"}; 
+        int cont = 0;
+        try {
+             int idPedido = Integer.parseInt(JOptionPane.showInputDialog("Inserta el id del pedido a actualizar:"));
+             while(rs.next()){
+                if(Integer.parseInt(rs.getString(1)) == idPedido){
+                    int x = JOptionPane.showOptionDialog(null, "¿A que estado quieres cambiar el pedido?","Selecciona una opcion",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+                    switch(rs.getString(2)){
+                        case "Pendiente":
+                            if(x == 0){
+                                aRecibido(idPedido);
+                            }else if(x == 1){
+                                aCancelado(idPedido);
+                            }
+                            break;
+                        
+                        case "Recibido" :
+                            JOptionPane.showMessageDialog(this, "El pedido seleccionado ya ha sido entregado");
+                            break;
+                        
+                        case "Cancelado" : 
+                            JOptionPane.showMessageDialog(this, "El pedido seleccionado ha sido cancelado, no puede acutalizarse");
+                            break;
+                                    
+                    }
+                    break;
+                }else{
+                    cont++;
+                }
+                
+             }
+         } catch (SQLException ex) {
+             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     private void jButtonEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar2ActionPerformed
