@@ -6,43 +6,43 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
-     
-     public void actualizarTabla(){
-         try {
-             Connection conexion = ConexionBD.getConexion();
-             
-             Statement st = conexion.createStatement();
-             ResultSet rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
-             DefaultTableModel modelo = new DefaultTableModel();
-             
-             modelo.addColumn("id");
-             modelo.addColumn("estado");
-             modelo.addColumn("fecha creacion");
-             modelo.addColumn("fecha aproximada");
-             modelo.addColumn("fecha entrega");
-             modelo.addColumn("comentario");
-             
-             String[] result = new String[6];
-             while(rs.next()){
-                 result[0] = rs.getString(1);
-                 result[1] = rs.getString(2);
-                 result[2] = rs.getString(3);
-                 result[3] = rs.getString(4);
-                 result[4] = rs.getString(5);
-                 result[5] = rs.getString(6);
-                 modelo.addRow(result);
-             }
-             jTablePedidos.setModel(modelo);
-         } catch (SQLException ex) {
-             System.out.println(ex);
-         }
-     }
     
     private Connection conexion;
+     
+     public void actualizarTabla(){
+        try{
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
+             
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("id");
+            modelo.addColumn("estado");
+            modelo.addColumn("fecha creacion");
+            modelo.addColumn("fecha aproximada");
+            modelo.addColumn("fecha entrega");
+            modelo.addColumn("comentario");
+             
+            String[] result = new String[6];
+            while(rs.next()){
+                result[0] = rs.getString(1);
+                result[1] = rs.getString(2);
+                result[2] = rs.getString(3);
+                result[3] = rs.getString(4);
+                result[4] = rs.getString(5);
+                result[5] = rs.getString(6);
+                modelo.addRow(result);
+            }
+            jTablePedidos.setModel(modelo);
+        } 
+        catch (SQLException ex){
+            System.out.println(ex);
+        }
+    }
     
     public VentanaPrincipal() {
         initComponents();
        
+        conexion = ConexionBD.getConexion();
         actualizarTabla();
     }
     
@@ -107,7 +107,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGap(0, 231, Short.MAX_VALUE)
         );
 
-        jButtonBuscar.setText("BUSCAR");
+        jButtonBuscar.setText("BUSCAR PEDIDO");
         jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBuscarActionPerformed(evt);
