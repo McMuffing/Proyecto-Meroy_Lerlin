@@ -87,9 +87,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTablePedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablePedidosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTablePedidos);
 
         jButtonEliminar.setLabel("ELIMINAR");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
 
         jButtonEditar.setLabel("EDITAR");
 
@@ -217,6 +227,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jButtonEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonEliminar2ActionPerformed
+
+    private void jTablePedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePedidosMouseClicked
+        // TODO add your handling code here:
+        String codigoPedido = "";
+        if(jTablePedidos.getSelectedRowCount() > 0){
+            codigoPedido = (String) (jTablePedidos.getValueAt(jTablePedidos.getSelectedRow(), 0));
+        }
+    }//GEN-LAST:event_jTablePedidosMouseClicked
+
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     /**
      * @param args the command line arguments
