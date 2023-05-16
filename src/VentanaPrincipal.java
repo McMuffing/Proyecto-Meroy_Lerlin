@@ -6,22 +6,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
-    
-     public void conectarBD(){
-        String nombre = JOptionPane.showInputDialog("Inserta el usuario");
-        String contra = JOptionPane.showInputDialog("Inserta la contraseña");
-        
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            conex = DriverManager.getConnection("jdbc:mysql://localhost:3306/jardineria",nombre,contra);
-        }catch(Exception ex) {
-            System.out.println(ex);
-        }
-    }
      
      public void actualizarTabla(){
          try {
-             Statement st = conex.createStatement();
+             Connection conexion = ConexionBD.getConexion();
+             
+             Statement st = conexion.createStatement();
              ResultSet rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
              DefaultTableModel modelo = new DefaultTableModel();
              
@@ -48,17 +38,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
          }
      }
     
-    private Connection conex;
+    private Connection conexion;
     
     public VentanaPrincipal() {
         initComponents();
-        
-        conectarBD();
+       
         actualizarTabla();
     }
     
-   
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
