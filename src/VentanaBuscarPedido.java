@@ -73,32 +73,48 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         jLabelFechaPedido.setText("FECHA PEDIDO:");
 
         jTextFieldFechaPedido.setEditable(false);
+        jTextFieldFechaPedido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldFechaPedido.setEnabled(false);
+        jTextFieldFechaPedido.setSelectedTextColor(new java.awt.Color(0, 0, 0));
 
         jLabelFechaEsperada.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelFechaEsperada.setText("FECHA ESPERADA:");
 
         jTextFieldFechaEsperada.setEditable(false);
+        jTextFieldFechaEsperada.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldFechaEsperada.setEnabled(false);
 
         jLabelFechaEntrega.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelFechaEntrega.setText("FECHA ENTREGA:");
 
         jTextFieldFechaEntrega.setEditable(false);
+        jTextFieldFechaEntrega.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldFechaEntrega.setEnabled(false);
 
         jLabelComentarios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelComentarios.setText("COMENTARIOS:");
 
         jTextFieldComentarios.setEditable(false);
+        jTextFieldComentarios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldComentarios.setEnabled(false);
 
         jLabelEstado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelEstado.setText("ESTADO:");
 
         jTextFieldEstado.setEditable(false);
+        jTextFieldEstado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldEstado.setEnabled(false);
 
         jLabelCodigoCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelCodigoCliente.setText("CODIGO CLIENTE:");
 
         jTextFieldCodigoCliente.setEditable(false);
+        jTextFieldCodigoCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldCodigoCliente.setEnabled(false);
 
+        jTextFieldCodigoProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jButtonMostrarResultadosPedido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonMostrarResultadosPedido.setText("MOSTRAR RESULTADOS");
         jButtonMostrarResultadosPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,12 +122,16 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             }
         });
 
+        jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonLimpiarCampos.setText("LIMPIAR CAMPOS");
         jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLimpiarCamposActionPerformed(evt);
             }
         });
+
+        jTextFieldPrecioTotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldPrecioTotal.setEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("PRECIO TOTAL DEL PEDIDO:");
@@ -133,7 +153,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                                 .addComponent(jLabelFechaEsperada)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldFechaEsperada, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                                 .addComponent(jLabelFechaEntrega)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -143,8 +163,8 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                                 .addComponent(jTextFieldComentarios))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDetallesPedidoLayout.createSequentialGroup()
                                 .addComponent(jLabelCodigoPedido)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextFieldCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addComponent(jTextFieldCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(5, 5, 5))
                     .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
@@ -158,23 +178,25 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
-                                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1)
                                 .addGap(15, 15, 15)
-                                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonMostrarResultadosPedido)
-                                    .addComponent(jTextFieldPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jTextFieldPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonMostrarResultadosPedido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelDetallesPedidoLayout.setVerticalGroup(
             jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(5, 5, 5)
                 .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCodigoPedido)
                     .addComponent(jTextFieldCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(15, 15, 15)
                 .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelFechaPedido)
@@ -183,25 +205,25 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                         .addComponent(jTextFieldFechaEsperada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabelFechaEntrega)
                         .addComponent(jTextFieldFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelComentarios)
                     .addComponent(jTextFieldComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelEstado)
                     .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelCodigoCliente)
                     .addComponent(jTextFieldCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonMostrarResultadosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jButtonMostrarResultadosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DETALLES PEDIDO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
@@ -231,8 +253,8 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -245,26 +267,26 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                     .addComponent(jLabelNombreVentana)
                     .addComponent(jPanelDetallesPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addComponent(jLabelNombreVentana)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelDetallesPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonMostrarResultadosPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarResultadosPedidoActionPerformed
-        // TODO add your handling code here:
-        double sumaTotal = 0;
+        
+        double sumaPrecioTotal = 0;
         
         Connection conexion = ConexionBD.getConexion();
         
@@ -272,18 +294,14 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                 
         PreparedStatement sentencia = null;
         
-        try{
-            Statement st = conexion.createStatement();
-            // Ejecutamos una consulta SELECT para obtener la tabla vendedores
-            
+        try{  
             String sentenciaSQL = "SELECT * FROM pedido WHERE codigo_pedido LIKE ?";
             
             sentencia = conexion.prepareStatement(sentenciaSQL);
             
             sentencia.setString(1, codigoProducto);
             
-            ResultSet rs = sentencia.executeQuery();
-            // Recorremos todo el ResultSet y mostramos sus datos    
+            ResultSet rs = sentencia.executeQuery();   
             
             if(rs.next()){
                 jTextFieldFechaPedido.setText(rs.getString("fecha_pedido"));
@@ -296,26 +314,11 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             else{
                 JOptionPane.showMessageDialog(this,"El codigo de producto " + codigoProducto + " no existe en la base de datos.","ERROR CARGA DE DATOS",JOptionPane.WARNING_MESSAGE);
             }
-            // Cerramos el statement y la conexión
-            st.close();
-        }
-
-        catch (SQLException e) {
-            e.printStackTrace();
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        //INTRODUCIMOS LOS DETALLES DEL PEDIDO ESPECIFICADO EN UN JTABLE
-        try{
+            
             String sql = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ? ORDER BY numero_linea ASC";
-            
             sentencia = conexion.prepareStatement(sql);
-            
             sentencia.setString(1, codigoProducto);
-            
-            ResultSet rs = sentencia.executeQuery();
+            rs = sentencia.executeQuery();
             
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.addColumn("CANTIDAD:");
@@ -324,9 +327,8 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             tabla.addColumn("NUMERO LINEA:");
             tabla.addColumn("PRECIO UNIDAD:");
             
-            String datosUsuarios[] = new String[5];
-
             while(rs.next()){
+                String[] datosUsuarios = new String[5];
                 datosUsuarios[0] = rs.getString("cantidad");
                 datosUsuarios[1] = rs.getString("codigo_pedido");
                 datosUsuarios[2] = rs.getString("codigo_producto");
@@ -337,13 +339,12 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                 double cantidad = Double.parseDouble(datosUsuarios[0]);
                 double precioUnidad = Double.parseDouble(datosUsuarios[4]);
                 double precioTotalFila = cantidad * precioUnidad;
-       
-                sumaTotal += precioTotalFila;
+                sumaPrecioTotal += precioTotalFila;
+                
+                jTableDetallesPedido.setModel(tabla);
+            
+                jTextFieldPrecioTotal.setText(String.valueOf(sumaPrecioTotal) + "€");
             }
-            
-            jTableDetallesPedido.setModel(tabla);
-            
-            jTextFieldPrecioTotal.setText(String.valueOf(sumaTotal));
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -362,6 +363,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         jTextFieldComentarios.setText("");
         jTextFieldEstado.setText("");
         jTextFieldCodigoCliente.setText("");
+        jTextFieldPrecioTotal.setText("");
     }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
 
     /**
@@ -398,7 +400,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonMostrarResultadosPedido;
