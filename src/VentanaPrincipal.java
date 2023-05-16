@@ -204,7 +204,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         newFrame.setVisible(true);
         
         this.dispose();
-        
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jButtonEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar1ActionPerformed

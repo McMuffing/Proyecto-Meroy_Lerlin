@@ -35,7 +35,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabelNombreVentana = new javax.swing.JLabel();
-        jPanelDetallesPedido = new javax.swing.JPanel();
+        jPanelDatosPedido = new javax.swing.JPanel();
         jLabelCodigoPedido = new javax.swing.JLabel();
         jLabelFechaPedido = new javax.swing.JLabel();
         jTextFieldFechaPedido = new javax.swing.JTextField();
@@ -49,14 +49,15 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         jTextFieldEstado = new javax.swing.JTextField();
         jLabelCodigoCliente = new javax.swing.JLabel();
         jTextFieldCodigoCliente = new javax.swing.JTextField();
-        jTextFieldCodigoProducto = new javax.swing.JTextField();
+        jTextFieldCodigoPedido = new javax.swing.JTextField();
         jButtonMostrarResultadosPedido = new javax.swing.JButton();
         jButtonLimpiarCampos = new javax.swing.JButton();
         jTextFieldPrecioTotal = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jLabelPrecioTotal = new javax.swing.JLabel();
+        jPanelDetallesPedido = new javax.swing.JPanel();
+        jScrollPaneDetallesPedido = new javax.swing.JScrollPane();
         jTableDetallesPedido = new javax.swing.JTable();
+        jToggleButtonVolverVentanaPrincipal = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -64,7 +65,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         jLabelNombreVentana.setFont(new java.awt.Font("Segoe UI", 1, 37)); // NOI18N
         jLabelNombreVentana.setText("DETALLES DEL PEDIDO:");
 
-        jPanelDetallesPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PEDIDO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 20))); // NOI18N
+        jPanelDatosPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PEDIDO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 20))); // NOI18N
 
         jLabelCodigoPedido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelCodigoPedido.setText("CODIGO PEDIDO:");
@@ -112,7 +113,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         jTextFieldCodigoCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextFieldCodigoCliente.setEnabled(false);
 
-        jTextFieldCodigoProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldCodigoPedido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jButtonMostrarResultadosPedido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonMostrarResultadosPedido.setText("MOSTRAR RESULTADOS");
@@ -133,19 +134,19 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         jTextFieldPrecioTotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextFieldPrecioTotal.setEnabled(false);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("PRECIO TOTAL DEL PEDIDO:");
+        jLabelPrecioTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelPrecioTotal.setText("PRECIO TOTAL DEL PEDIDO:");
 
-        javax.swing.GroupLayout jPanelDetallesPedidoLayout = new javax.swing.GroupLayout(jPanelDetallesPedido);
-        jPanelDetallesPedido.setLayout(jPanelDetallesPedidoLayout);
-        jPanelDetallesPedidoLayout.setHorizontalGroup(
-            jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelDatosPedidoLayout = new javax.swing.GroupLayout(jPanelDatosPedido);
+        jPanelDatosPedido.setLayout(jPanelDatosPedidoLayout);
+        jPanelDatosPedidoLayout.setHorizontalGroup(
+            jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDatosPedidoLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetallesPedidoLayout.createSequentialGroup()
-                        .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDetallesPedidoLayout.createSequentialGroup()
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDatosPedidoLayout.createSequentialGroup()
+                        .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDatosPedidoLayout.createSequentialGroup()
                                 .addComponent(jLabelFechaPedido)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,19 +158,19 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                                 .addComponent(jLabelFechaEntrega)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDetallesPedidoLayout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDatosPedidoLayout.createSequentialGroup()
                                 .addComponent(jLabelComentarios)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldComentarios))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDetallesPedidoLayout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDatosPedidoLayout.createSequentialGroup()
                                 .addComponent(jLabelCodigoPedido)
                                 .addGap(15, 15, 15)
-                                .addComponent(jTextFieldCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(5, 5, 5))
-                    .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
-                        .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
+                    .addGroup(jPanelDatosPedidoLayout.createSequentialGroup()
+                        .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelDatosPedidoLayout.createSequentialGroup()
                                 .addComponent(jLabelEstado)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,56 +178,56 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                                 .addComponent(jLabelCodigoCliente)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                            .addGroup(jPanelDatosPedidoLayout.createSequentialGroup()
+                                .addComponent(jLabelPrecioTotal)
                                 .addGap(15, 15, 15)
                                 .addComponent(jTextFieldPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
+            .addGroup(jPanelDatosPedidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonMostrarResultadosPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanelDetallesPedidoLayout.setVerticalGroup(
-            jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
+        jPanelDatosPedidoLayout.setVerticalGroup(
+            jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDatosPedidoLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCodigoPedido)
-                    .addComponent(jTextFieldCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelFechaPedido)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelFechaEsperada)
                         .addComponent(jTextFieldFechaEsperada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabelFechaEntrega)
                         .addComponent(jTextFieldFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelComentarios)
                     .addComponent(jTextFieldComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelEstado)
                     .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelCodigoCliente)
                     .addComponent(jTextFieldCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPrecioTotal)
                     .addComponent(jTextFieldPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
-                .addGroup(jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonMostrarResultadosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DETALLES PEDIDO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
+        jPanelDetallesPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DETALLES PEDIDO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
 
         jTableDetallesPedido.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         jTableDetallesPedido.setModel(new javax.swing.table.DefaultTableModel(
@@ -238,24 +239,32 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             }
         ));
         jTableDetallesPedido.setEnabled(false);
-        jScrollPane1.setViewportView(jTableDetallesPedido);
+        jScrollPaneDetallesPedido.setViewportView(jTableDetallesPedido);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelDetallesPedidoLayout = new javax.swing.GroupLayout(jPanelDetallesPedido);
+        jPanelDetallesPedido.setLayout(jPanelDetallesPedidoLayout);
+        jPanelDetallesPedidoLayout.setHorizontalGroup(
+            jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneDetallesPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanelDetallesPedidoLayout.setVerticalGroup(
+            jPanelDetallesPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDetallesPedidoLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneDetallesPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
         );
+
+        jToggleButtonVolverVentanaPrincipal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jToggleButtonVolverVentanaPrincipal.setText("VOLVER");
+        jToggleButtonVolverVentanaPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonVolverVentanaPrincipalActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -263,10 +272,12 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabelNombreVentana)
-                    .addComponent(jPanelDetallesPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabelNombreVentana)
+                        .addComponent(jPanelDatosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanelDetallesPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jToggleButtonVolverVentanaPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -275,10 +286,12 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabelNombreVentana)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
                 .addComponent(jPanelDetallesPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addComponent(jToggleButtonVolverVentanaPrincipal)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -290,7 +303,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
         
         Connection conexion = ConexionBD.getConexion();
         
-        String codigoProducto = jTextFieldCodigoProducto.getText();
+        String codigoProducto = jTextFieldCodigoPedido.getText();
                 
         PreparedStatement sentencia = null;
         
@@ -346,25 +359,41 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                 jTextFieldPrecioTotal.setText(String.valueOf(sumaPrecioTotal) + "€");
             }
         }
-        catch (SQLException e) {
+        catch (SQLException e){
             e.printStackTrace();
         } 
-        catch (Exception e) {
+        catch (Exception e){
             e.printStackTrace();
         }
     }//GEN-LAST:event_jButtonMostrarResultadosPedidoActionPerformed
 
     private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
         // TODO add your handling code here:
-        jTextFieldCodigoProducto.setText("");
-        jTextFieldFechaPedido.setText("");
-        jTextFieldFechaEsperada.setText("");
-        jTextFieldFechaEntrega.setText("");
-        jTextFieldComentarios.setText("");
-        jTextFieldEstado.setText("");
-        jTextFieldCodigoCliente.setText("");
-        jTextFieldPrecioTotal.setText("");
+        int confirmarLimpiarCampos = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que desea limpiar todos los campos?", "LIMPIAR CAMPOS", JOptionPane.YES_NO_OPTION);
+        
+        if(confirmarLimpiarCampos == JOptionPane.YES_OPTION){
+            jTextFieldCodigoPedido.setText("");
+            jTextFieldFechaPedido.setText("");
+            jTextFieldFechaEsperada.setText("");
+            jTextFieldFechaEntrega.setText("");
+            jTextFieldComentarios.setText("");
+            jTextFieldEstado.setText("");
+            jTextFieldCodigoCliente.setText("");
+            jTextFieldPrecioTotal.setText("");
+
+            DefaultTableModel tablaDetallesPedido = (DefaultTableModel) jTableDetallesPedido.getModel();
+            tablaDetallesPedido.setRowCount(0);
+        }
     }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+
+    private void jToggleButtonVolverVentanaPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonVolverVentanaPrincipalActionPerformed
+        // TODO add your handling code here:
+        VentanaPrincipal newFrame = new VentanaPrincipal();
+        
+        newFrame.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_jToggleButtonVolverVentanaPrincipalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -404,7 +433,6 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonMostrarResultadosPedido;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelCodigoCliente;
     private javax.swing.JLabel jLabelCodigoPedido;
     private javax.swing.JLabel jLabelComentarios;
@@ -413,17 +441,19 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelFechaEsperada;
     private javax.swing.JLabel jLabelFechaPedido;
     private javax.swing.JLabel jLabelNombreVentana;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabelPrecioTotal;
+    private javax.swing.JPanel jPanelDatosPedido;
     private javax.swing.JPanel jPanelDetallesPedido;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneDetallesPedido;
     private javax.swing.JTable jTableDetallesPedido;
     private javax.swing.JTextField jTextFieldCodigoCliente;
-    private javax.swing.JTextField jTextFieldCodigoProducto;
+    private javax.swing.JTextField jTextFieldCodigoPedido;
     private javax.swing.JTextField jTextFieldComentarios;
     private javax.swing.JTextField jTextFieldEstado;
     private javax.swing.JTextField jTextFieldFechaEntrega;
     private javax.swing.JTextField jTextFieldFechaEsperada;
     private javax.swing.JTextField jTextFieldFechaPedido;
     private javax.swing.JTextField jTextFieldPrecioTotal;
+    private javax.swing.JToggleButton jToggleButtonVolverVentanaPrincipal;
     // End of variables declaration//GEN-END:variables
 }
