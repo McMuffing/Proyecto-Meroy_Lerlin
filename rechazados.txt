@@ -1,0 +1,25 @@
+
+3  2008-06-20  2008-06-25  null  Rechazado  Limite de credito superado  
+14  2009-01-02  2009-01-02  null  Rechazado  mal pago  
+21  2009-01-09  2009-01-09  2009-01-09  Rechazado  mal pago  
+23  2008-12-30  2009-01-10  null  Rechazado  El pedido fue anulado por el cliente  
+25  2009-02-02  2009-02-08  null  Rechazado  El cliente carece de saldo en la cuenta asociada  
+26  2009-02-06  2009-02-12  null  Rechazado  El cliente anula la operacion para adquirir mas producto  
+29  2008-08-01  2008-09-01  2008-09-01  Rechazado  El cliente no está conforme con el pedido  
+31  2008-09-04  2008-09-30  2008-10-04  Rechazado  El cliente ha rechazado por llegar 5 dias tarde  
+33  2007-05-20  2007-05-28  null  Rechazado  El pedido fue anulado por el cliente  
+35  2008-03-10  2009-03-20  null  Rechazado  Limite de credito superado  
+40  2009-03-09  2009-03-10  2009-03-13  Rechazado  null  
+46  2009-04-03  2009-03-04  2009-03-05  Rechazado  null  
+56  2008-12-19  2009-01-20  null  Rechazado  El cliente a anulado el pedido el dia 2009-01-10  
+65  2009-02-02  2009-02-08  null  Rechazado  El cliente carece de saldo en la cuenta asociada  
+66  2009-02-06  2009-02-12  null  Rechazado  El cliente anula la operacion para adquirir mas producto  
+74  2009-01-14  2009-01-22  null  Rechazado  El pedido no llego el dia que queria el cliente por fallo del transporte  
+81  2009-01-18  2009-01-24  null  Rechazado  Los producto estaban en mal estado  
+101  2009-03-07  2009-03-27  null  Rechazado  El pedido fue rechazado por el cliente  
+105  2009-02-14  2009-02-20  null  Rechazado  el producto ha sido rechazado por la pesima calidad  
+113  2008-10-28  2008-11-09  2009-01-09  Rechazado  El producto ha sido rechazado por la tardanza de el envio  
+117  2008-08-25  2008-10-01  null  Rechazado  El pedido ha sido rechazado por la acumulacion de pago pendientes del cliente  
+120  2009-03-07  2009-03-27  null  Rechazado  El pedido fue rechazado por el cliente  
+125  2009-02-14  2009-02-20  null  Rechazado  el producto ha sido rechazado por la pesima calidad  
+128  2008-11-10  2008-12-10  2008-12-29  Rechazado  El pedido ha sido rechazado por el cliente por el retraso en la entrega  

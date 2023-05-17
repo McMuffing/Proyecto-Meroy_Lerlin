@@ -1,38 +1,85 @@
-
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import java.io.*;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.Desktop;
 /**
  *
  * @author iker
  */
-public class JFrameInformeClientes extends javax.swing.JFrame {
+public class jFrameInformeRechazados extends javax.swing.JFrame {
     private ResultSet rs;
+    /**
+     * Creates new form jFrameInformeRechazados
+     */
+    public jFrameInformeRechazados(ResultSet rs) {
+        initComponents();
+        this.rs = rs;
+        actualizarTablas();
+        volcar();
+    }
 
-    private JFrameInformeClientes() {
+    private jFrameInformeRechazados() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    public void actualizarTabla(){
+    public void volcar(){
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿Deseas volcarlo en un TXT?");
+        if(seleccion==0){
+            File archivo = new File("rechazados.txt");
 
-             DefaultTableModel modelo = new DefaultTableModel();
+            if(!archivo.exists()){
+                try {
+                    archivo.createNewFile();
+                    System.out.println(archivo.getAbsolutePath());
+                } catch (IOException ex) {
+                    Logger.getLogger(jFrameInformeRechazados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            try {
+                FileWriter fw = new FileWriter(archivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+                String datos = "";
+                    while(rs.next()){
+                        datos = "\n";
+                        datos += rs.getString(1)+"  ";
+                        datos += rs.getString(2)+"  ";
+                        datos += rs.getString(3)+"  ";
+                        datos += rs.getString(4)+"  ";
+                        datos += rs.getString(5)+"  ";
+                        datos += rs.getString(6)+"  ";
+                        bw.write(datos);
+                    }
+                    
+                    bw.close();
+                    fw.close();
+                    
+                    Desktop.getDesktop().open(archivo);
+            } catch (IOException ex) {
+                Logger.getLogger(jFrameInformeRechazados.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                    Logger.getLogger(jFrameInformeRechazados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        }
+    }
+    
+    public void actualizarTablas(){
+        DefaultTableModel modelo = new DefaultTableModel();
              
-             modelo.addColumn("Nombre Cliente");
-             modelo.addColumn("Direccion");
-             modelo.addColumn("Codigo Postal");
-             modelo.addColumn("Ciudad");
-             modelo.addColumn("Telefono");
-             modelo.addColumn("Codigo del Pedido");
-             modelo.addColumn("Fecha del Pedido");
+             modelo.addColumn("Codigo Pedido");
+             modelo.addColumn("Fecha Pedido");
+             modelo.addColumn("Fecha aproximada");
+             modelo.addColumn("Fecha entrega");
+             modelo.addColumn("Estado");
+             modelo.addColumn("Comentarios");
              
-             String[] result = new String[7];
+             String[] result = new String[6];
         try {
             while(rs.next()){
                 result[0] = rs.getString(1);
@@ -41,25 +88,14 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
                 result[3] = rs.getString(4);
                 result[4] = rs.getString(5);
                 result[5] = rs.getString(6);
-                result[5] = rs.getString(7);
                 modelo.addRow(result);
             }
+            rs.beforeFirst();
         } catch (SQLException ex) {
             Logger.getLogger(JFrameInformeClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
-             jTable1.setModel(modelo);
-
-     }
-    /**
-     * Creates new form JFrameInformeClientes
-     */
-    public JFrameInformeClientes(ResultSet rs) {
-        initComponents();
-        this.rs = rs;
-        actualizarTabla();
-        
+             jTableRechazados.setModel(modelo);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,12 +106,12 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableRechazados = new javax.swing.JTable();
         jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableRechazados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -86,9 +122,10 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableRechazados);
 
         jButtonVolver.setText("VOLVER");
+        jButtonVolver.setActionCommand("VOLVER");
         jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonVolverActionPerformed(evt);
@@ -102,10 +139,10 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonVolver))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE))
+                        .addComponent(jButtonVolver)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,15 +150,14 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonVolver)
-                .addContainerGap())
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         VentanaPrincipal ventana = new VentanaPrincipal();
         ventana.setVisible(true);
@@ -145,20 +181,20 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameInformeClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jFrameInformeRechazados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameInformeClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jFrameInformeRechazados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameInformeClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jFrameInformeRechazados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameInformeClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jFrameInformeRechazados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameInformeClientes().setVisible(true);
+                new jFrameInformeRechazados().setVisible(true);
             }
         });
     }
@@ -166,6 +202,6 @@ public class JFrameInformeClientes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableRechazados;
     // End of variables declaration//GEN-END:variables
 }

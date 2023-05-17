@@ -278,7 +278,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jButtonEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar1ActionPerformed
         ResultSet resultSet = null;
         try{
-            Statement st = conexion.createStatement( );
+            Statement st = conexion.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             resultSet = st.executeQuery("SELECT c.nombre_cliente, c.linea_direccion1, c.codigo_postal, c.ciudad, c.telefono, p.codigo_pedido, p.fecha_pedido FROM pedido p JOIN cliente c USING(codigo_cliente) ORDER BY codigo_pedido");
              
         }catch(Exception ex){
@@ -329,7 +329,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     private void jButtonEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar2ActionPerformed
-        // TODO add your handling code here:
+
+        jFrameInformeRechazados frame = null;
+        
+        try {
+            Statement cRechazados = conexion.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet resultRechazados = cRechazados.executeQuery("SELECT * FROM pedido WHERE estado LIKE 'Rechazado'");
+            frame = new jFrameInformeRechazados(resultRechazados);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonEliminar2ActionPerformed
 
     private void jTablePedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePedidosMouseClicked
