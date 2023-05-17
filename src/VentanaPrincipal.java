@@ -242,13 +242,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
         PreparedStatement sentenciaDetallesPedido = null;
         PreparedStatement sentenciaStock = null;
+        PreparedStatement sentenciaEliminarDetalles = null;
         
         try{
             String sentenciaSQL = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ?";
             String sentenciaSQL1 = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
+            String sentenciaSQL2 = "DELETE FROM detalle_pedido WHERE codigo_pedido LIKE ?";
             
             sentenciaDetallesPedido = conexion.prepareStatement(sentenciaSQL);
             sentenciaStock = conexion.prepareStatement(sentenciaSQL1);
+            sentenciaEliminarDetalles = conexion.prepareStatement(sentenciaSQL2);
             
             sentenciaDetallesPedido.setString(1, codigoPedido);
             
@@ -269,10 +272,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 catch(SQLException e){
                     e.printStackTrace();
                 }
+                
+                sentenciaEliminarDetalles.setString(1, codigoPedido);
+                sentenciaEliminarDetalles.executeUpdate();
             }
             rs.close();
             sentenciaDetallesPedido.close();
             sentenciaStock.close();
+            sentenciaEliminarDetalles.close();
         }
         catch(SQLException e){
             e.printStackTrace();
