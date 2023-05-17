@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 public class VentanaPrincipal extends javax.swing.JFrame {
     
     private Connection conexion;
+    private String codigoPedido = "";
      
      public void actualizarTabla(){
         try{
@@ -229,8 +230,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEliminar2ActionPerformed
 
     private void jTablePedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePedidosMouseClicked
-        // TODO add your handling code here:
-        String codigoPedido = "";
+        // TODO add your handling code here: 
         if(jTablePedidos.getSelectedRowCount() > 0){
             codigoPedido = (String) (jTablePedidos.getValueAt(jTablePedidos.getSelectedRow(), 0));
         }
@@ -238,7 +238,48 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         // TODO add your handling code here:
+        Connection conexion = ConexionBD.getConexion();
         
+        PreparedStatement sentenciaDetallesPedido = null;
+        PreparedStatement sentenciaStock = null;
+        
+        try{
+            String sentenciaSQL = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ?";
+            String sentenciaSQL1 = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
+            
+            sentenciaDetallesPedido = conexion.prepareStatement(sentenciaSQL);
+            sentenciaStock = conexion.prepareStatement(sentenciaSQL1);
+            
+            sentenciaDetallesPedido.setString(1, codigoPedido);
+            
+            ResultSet rs = sentenciaDetallesPedido.executeQuery();
+
+            while(rs.next()){
+                String codigoProducto = rs.getString("codigo_producto");
+                int cantidadProducto = rs.getInt("cantidad");
+                
+                String codigoProductoActual = codigoProducto;
+                int cantidadActual = cantidadProducto;
+                
+                try{
+                    sentenciaStock.setInt(1, cantidadActual);
+                    sentenciaStock.setString(2, codigoProductoActual);
+                    sentenciaStock.executeUpdate();
+                }
+                catch(SQLException e){
+                    e.printStackTrace();
+                }
+            }
+            rs.close();
+            sentenciaDetallesPedido.close();
+            sentenciaStock.close();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        } 
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     /**
