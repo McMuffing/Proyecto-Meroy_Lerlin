@@ -298,72 +298,78 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonMostrarResultadosPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarResultadosPedidoActionPerformed
-        
-        double sumaPrecioTotal = 0;
-        
+        // TODO add your handling code here:
         Connection conexion = ConexionBD.getConexion();
-        
-        String codigoProducto = jTextFieldCodigoPedido.getText();
                 
         PreparedStatement sentencia = null;
         
-        try{  
-            String sentenciaSQL = "SELECT * FROM pedido WHERE codigo_pedido LIKE ?";
-            
-            sentencia = conexion.prepareStatement(sentenciaSQL);
-            
-            sentencia.setString(1, codigoProducto);
-            
-            ResultSet rs = sentencia.executeQuery();   
-            
-            if(rs.next()){
-                jTextFieldFechaPedido.setText(rs.getString("fecha_pedido"));
-                jTextFieldFechaEsperada.setText(rs.getString("fecha_esperada"));
-                jTextFieldFechaEntrega.setText(rs.getString("fecha_entrega"));
-                jTextFieldComentarios.setText(rs.getString("comentarios"));
-                jTextFieldEstado.setText(rs.getString("estado"));
-                jTextFieldCodigoCliente.setText(rs.getString("codigo_cliente"));
-            }
-            else{
-                JOptionPane.showMessageDialog(this,"El codigo de producto " + codigoProducto + " no existe en la base de datos.","ERROR CARGA DE DATOS",JOptionPane.WARNING_MESSAGE);
-            }
-            
-            String sql = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ? ORDER BY numero_linea ASC";
-            sentencia = conexion.prepareStatement(sql);
-            sentencia.setString(1, codigoProducto);
-            rs = sentencia.executeQuery();
-            
-            DefaultTableModel tabla = new DefaultTableModel();
-            tabla.addColumn("NUMERO LINEA:");
-            tabla.addColumn("CODIGO PEDIDO:");
-            tabla.addColumn("CODIGO PRODUCTO:");
-            tabla.addColumn("CANTIDAD:");
-            tabla.addColumn("PRECIO UNIDAD:");
-            
-            while(rs.next()){
-                String[] datosUsuarios = new String[5];
-                datosUsuarios[0] = rs.getString("numero_linea");
-                datosUsuarios[1] = rs.getString("codigo_pedido");
-                datosUsuarios[2] = rs.getString("codigo_producto");
-                datosUsuarios[3] = rs.getString("cantidad");
-                datosUsuarios[4] = rs.getString("precio_unidad");
-                tabla.addRow(datosUsuarios);
-                
-                double cantidad = Double.parseDouble(datosUsuarios[3]);
-                double precioUnidad = Double.parseDouble(datosUsuarios[4]);
-                double precioTotalFila = cantidad * precioUnidad;
-                sumaPrecioTotal += precioTotalFila;
-                
-                jTableDetallesPedido.setModel(tabla);
-            
-                jTextFieldPrecioTotal.setText(String.valueOf(sumaPrecioTotal) + "€");
-            }
+        String codigoPedido = jTextFieldCodigoPedido.getText();
+        
+        double sumaPrecioTotal = 0;
+        
+        if(codigoPedido.isEmpty()){
+            JOptionPane.showMessageDialog(this,"No se ha introducido ningun codigo de pedido. Introduzca de nuevo un codigo de pedido mara mostrar sus detalles.","ERROR CARGA DE DATOS",JOptionPane.WARNING_MESSAGE);
         }
-        catch (SQLException e){
-            e.printStackTrace();
-        } 
-        catch (Exception e){
-            e.printStackTrace();
+        
+        else{
+            try{  
+                String sentenciaSQL = "SELECT * FROM pedido WHERE codigo_pedido LIKE ?";
+
+                sentencia = conexion.prepareStatement(sentenciaSQL);
+
+                sentencia.setString(1, codigoPedido);
+
+                ResultSet rs = sentencia.executeQuery();   
+
+                if(rs.next()){
+                    jTextFieldFechaPedido.setText(rs.getString("fecha_pedido"));
+                    jTextFieldFechaEsperada.setText(rs.getString("fecha_esperada"));
+                    jTextFieldFechaEntrega.setText(rs.getString("fecha_entrega"));
+                    jTextFieldComentarios.setText(rs.getString("comentarios"));
+                    jTextFieldEstado.setText(rs.getString("estado"));
+                    jTextFieldCodigoCliente.setText(rs.getString("codigo_cliente"));
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"El codigo de producto " + codigoPedido + " no existe en la base de datos.","ERROR CARGA DE DATOS",JOptionPane.WARNING_MESSAGE);
+                }
+
+                String sql = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ? ORDER BY numero_linea ASC";
+                sentencia = conexion.prepareStatement(sql);
+                sentencia.setString(1, codigoPedido);
+                rs = sentencia.executeQuery();
+
+                DefaultTableModel tabla = new DefaultTableModel();
+                tabla.addColumn("NUMERO LINEA:");
+                tabla.addColumn("CODIGO PEDIDO:");
+                tabla.addColumn("CODIGO PRODUCTO:");
+                tabla.addColumn("CANTIDAD:");
+                tabla.addColumn("PRECIO UNIDAD:");
+
+                while(rs.next()){
+                    String[] datosUsuarios = new String[5];
+                    datosUsuarios[0] = rs.getString("numero_linea");
+                    datosUsuarios[1] = rs.getString("codigo_pedido");
+                    datosUsuarios[2] = rs.getString("codigo_producto");
+                    datosUsuarios[3] = rs.getString("cantidad");
+                    datosUsuarios[4] = rs.getString("precio_unidad");
+                    tabla.addRow(datosUsuarios);
+
+                    double cantidad = Double.parseDouble(datosUsuarios[3]);
+                    double precioUnidad = Double.parseDouble(datosUsuarios[4]);
+                    double precioTotalFila = cantidad * precioUnidad;
+                    sumaPrecioTotal += precioTotalFila;
+
+                    jTableDetallesPedido.setModel(tabla);
+
+                    jTextFieldPrecioTotal.setText(String.valueOf(sumaPrecioTotal) + "€");
+                }
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+            } 
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButtonMostrarResultadosPedidoActionPerformed
 
