@@ -37,7 +37,6 @@ public class jFrameInformeRechazados extends javax.swing.JFrame {
             if(!archivo.exists()){
                 try {
                     archivo.createNewFile();
-                    System.out.println(archivo.getAbsolutePath());
                 } catch (IOException ex) {
                     Logger.getLogger(jFrameInformeRechazados.class.getName()).log(Level.SEVERE, null, ex);
                 }
