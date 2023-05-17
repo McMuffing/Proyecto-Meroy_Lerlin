@@ -13,7 +13,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      
      public void actualizarTabla(){
         try{
-            Statement st = conexion.createStatement();
+            Statement st = conexion.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
              
             DefaultTableModel modelo = new DefaultTableModel();
@@ -35,6 +35,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 modelo.addRow(result);
             }
             jTablePedidos.setModel(modelo);
+            rs.beforeFirst();
         } 
         catch (SQLException ex){
             System.out.println(ex);
