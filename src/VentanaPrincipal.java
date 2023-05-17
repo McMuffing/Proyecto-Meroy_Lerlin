@@ -9,11 +9,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     private Connection conexion;
     private String codigoPedido = "";
+    private ResultSet rs;
      
      public void actualizarTabla(){
         try{
             Statement st = conexion.createStatement();
-            ResultSet rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
+            rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido");
              
             DefaultTableModel modelo = new DefaultTableModel();
             modelo.addColumn("CODIGO PEDIDO");
@@ -40,6 +41,60 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
     
+     //Metodo para pasar el estado de un pedido a RECIBIDO
+     public void aRecibido(int idPedido){
+         try {
+            String ssql = "UPDATE pedido SET estado='Recibido', fecha_entrega=curdate() WHERE codigo_pedido =?";
+            PreparedStatement update = conexion.prepareStatement(ssql);
+            update.setInt(1, idPedido);
+            if(update.executeUpdate() > 0){
+                JOptionPane.showMessageDialog(this, "Ha sido actualizado correctamente");
+                actualizarTabla();
+            }
+                   
+         } catch (SQLException ex) {
+             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
+     }
+     
+     //Metodo para pasar el estado de un pedido a CANCELADO
+     public void aCancelado(int idPedido)   {
+         try {
+            String ssql = "UPDATE pedido SET estado='Cancelado' WHERE codigo_pedido = ?";
+            String select = "SELECT codigo_producto, cantidad FROM detalle_pedido WHERE codigo_pedido = ?";
+            String selectProd = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
+            String restablecer = "UPDATE producto SET cantidad_en_stock = ? WHERE codigo_producto = ?";
+           
+            PreparedStatement selectDetalle = conexion.prepareStatement(select);
+            selectDetalle.setInt(1, idPedido);
+            ResultSet detalles = selectDetalle.executeQuery();
+            
+            PreparedStatement restab = conexion.prepareStatement(restablecer);
+            PreparedStatement selectP = conexion.prepareStatement(selectProd);
+            
+            while(detalles.next()){
+                String codigoP = detalles.getString(1);
+                selectP.setString(1, codigoP);
+                ResultSet productos = selectP.executeQuery();
+                productos.next();
+                int cant = detalles.getInt(2)+productos.getInt(1);
+                restab.setInt(1, cant);
+                restab.setString(2, codigoP);
+                restab.executeUpdate();
+            }
+             
+            PreparedStatement update = conexion.prepareStatement(ssql);
+            update.setInt(1, idPedido);
+            
+            if(update.executeUpdate() > 0){
+                JOptionPane.showMessageDialog(this, "Ha sido cancelado correctamente");
+                actualizarTabla();
+            }    
+         } catch (SQLException ex) {
+             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
+     } 
+     
     public VentanaPrincipal() {
         initComponents();
        
@@ -220,11 +275,56 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jButtonEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar1ActionPerformed
-        // TODO add your handling code here:
+        ResultSet resultSet = null;
+        try{
+            Statement st = conexion.createStatement( );
+            resultSet = st.executeQuery("SELECT c.nombre_cliente, c.linea_direccion1, c.codigo_postal, c.ciudad, c.telefono, p.codigo_pedido, p.fecha_pedido FROM pedido p JOIN cliente c USING(codigo_cliente) ORDER BY codigo_pedido");
+             
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        
+        JFrameInformeClientes jFrameInforme = new JFrameInformeClientes(resultSet);
+        jFrameInforme.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonEliminar1ActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        // TODO add your handling code here:
+        String[] opciones = {"Recibido", "Cancelado"}; 
+        int cont = 0;
+        try {
+             int idPedido = Integer.parseInt(JOptionPane.showInputDialog("Inserta el id del pedido a actualizar:"));
+             while(rs.next()){
+                if(Integer.parseInt(rs.getString(1)) == idPedido){
+                    int x = JOptionPane.showOptionDialog(null, "¿A que estado quieres cambiar el pedido?","Selecciona una opcion",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+                    switch(rs.getString(2)){
+                        case "Pendiente":
+                            if(x == 0){
+                                aRecibido(idPedido);
+                            }else if(x == 1){
+                                aCancelado(idPedido);
+                            }
+                            break;
+                        
+                        case "Recibido" :
+                            JOptionPane.showMessageDialog(this, "El pedido seleccionado ya ha sido entregado");
+                            break;
+                        
+                        case "Cancelado" : 
+                            JOptionPane.showMessageDialog(this, "El pedido seleccionado ha sido cancelado, no puede acutalizarse");
+                            break;
+                                    
+                    }
+                    break;
+                }else{
+                    cont++;
+                }
+                
+             }
+         } catch (SQLException ex) {
+             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     private void jButtonEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminar2ActionPerformed
@@ -304,6 +404,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         catch(Exception e){
             e.printStackTrace();
         }
+        
+        actualizarTabla();
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     /**
