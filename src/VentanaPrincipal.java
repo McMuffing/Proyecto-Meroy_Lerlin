@@ -17,6 +17,39 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private DefaultTableModel modelTablaProds;
     private DefaultTableModel modeloProductos;
      
+     //Metodo para actualizar la tabla de productos
+     public void actualizarProductos(){
+         try {
+            PreparedStatement sProductos = conexion.prepareStatement("SELECT * FROM producto WHERE gama LIKE ?",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String categoria = String.valueOf(jComboCategorias.getSelectedItem());
+            sProductos.setString(1, categoria);
+            
+            productos = sProductos.executeQuery();
+            modeloProductos = new DefaultTableModel();
+            String[] result = new String[6];
+            modeloProductos.addColumn("ID");
+            modeloProductos.addColumn("Nombre");
+            modeloProductos.addColumn("Dimensiones");
+            modeloProductos.addColumn("Stock");
+            modeloProductos.addColumn("Precio");
+            modeloProductos.addColumn("Descripcion");
+            
+            while(productos.next()){
+                result[0] = productos.getString(1);
+                result[1] = productos.getString(2);
+                result[2] = productos.getString(4);
+                result[3] = productos.getString(7);
+                result[4] = productos.getString(8);
+                result[5] = productos.getString(6);
+                modeloProductos.addRow(result);
+            }
+            jTableProductos.setModel(modeloProductos);
+            productos.beforeFirst();
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
+    
      //Metodo para saber el id de un cliente por su nombre
      public int idCliente(String nombre){
         try {
@@ -87,7 +120,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                      }catch(Exception ex){
                          JOptionPane.showMessageDialog(null, "Inserta un numero");
                      }
-                     if(cant > 0){
+                     if(cant > 0 && cant <= Integer.parseInt(String.valueOf(jTableProductos.getValueAt(jTableProductos.getSelectedRow(), 3)))){
                         producto[0] = String.valueOf(jTableProductos.getValueAt(jTableProductos.getSelectedRow(), 0));
                         producto[1] = String.valueOf(jTableProductos.getValueAt(jTableProductos.getSelectedRow(), 1));
                         producto[2] = String.valueOf(jTableProductos.getValueAt(jTableProductos.getSelectedRow(), 2));
@@ -96,6 +129,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         producto[5] = String.valueOf(jTableProductos.getValueAt(jTableProductos.getSelectedRow(), 5));
                         modelTablaProds.addRow(producto);
                         jTableArticulos.setModel(modelTablaProds);
+                     }else{
+                         JOptionPane.showMessageDialog(null, "Inserta una cantidad valida");
                      }
                      
                     }
@@ -817,32 +852,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBorrarArtActionPerformed
 
     private void jComboCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboCategoriasActionPerformed
-        try {
-            Statement sProductos = conexion.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            productos = sProductos.executeQuery("SELECT * FROM producto");
-            modeloProductos = new DefaultTableModel();
-            String[] result = new String[6];
-            modeloProductos.addColumn("ID");
-            modeloProductos.addColumn("Nombre");
-            modeloProductos.addColumn("Dimensiones");
-            modeloProductos.addColumn("Stock");
-            modeloProductos.addColumn("Precio");
-            modeloProductos.addColumn("Descripcion");
-            
-            while(productos.next()){
-                result[0] = productos.getString(1);
-                result[1] = productos.getString(2);
-                result[2] = productos.getString(4);
-                result[3] = productos.getString(7);
-                result[4] = productos.getString(8);
-                result[5] = productos.getString(6);
-                modeloProductos.addRow(result);
-            }
-            jTableProductos.setModel(modeloProductos);
-            productos.beforeFirst();
-        } catch (SQLException ex) {
-            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        actualizarProductos();
     }//GEN-LAST:event_jComboCategoriasActionPerformed
 
     private void jTableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProductosMouseClicked
@@ -858,6 +868,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         int idClient;
         int cont=0;
         
+        
         try {
             PreparedStatement pedido = conexion.prepareStatement(sPedido);
             PreparedStatement detalle = conexion.prepareStatement(sDetalle);
@@ -868,14 +879,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             rs.beforeFirst();
             idClient = idCliente(String.valueOf(jComboClientes.getSelectedItem()));
             pedido.setInt(1, id);
-            //pedido.setString(2, comentario);
             pedido.setInt(2, idClient);
             
-            if(pedido.executeUpdate() > 0){cont++;}
+            
+            
+            if(pedido.executeUpdate() > 0){System.out.println("1");cont++;}
             
             for(int i=0; i<modelTablaProds.getRowCount(); i++){
                 detalle.setInt(1, id);
-                String idProd = String.valueOf(modelTablaProds.getValueAt(i, 1));
+                String idProd = String.valueOf(modelTablaProds.getValueAt(i, 0));
                 detalle.setString(2, idProd);
                 int cant = Integer.parseInt(String.valueOf(modelTablaProds.getValueAt(i, 3)));
                 detalle.setInt(3, cant);
@@ -884,17 +896,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 detalle.setInt(5, i);
                 
                 
-//                if(detalle.executeUpdate()>0){cont++;}
+                if(detalle.executeUpdate()>0){cont++;System.out.println("2");}
                 
-                int cantProd = Integer.parseInt(String.valueOf(modeloProductos.getValueAt(i, 3)));
+                int cantProd = Integer.parseInt(String.valueOf(modeloProductos.getValueAt(i, 3)))-cant;
                 producto.setInt(1, cantProd);
                 producto.setString(2, idProd);
                 
-                if(producto.executeUpdate()>0){cont++;}
+                if(producto.executeUpdate()>0){cont++;System.out.println("3");}
                 
             }
                 if(cont==3){JOptionPane.showMessageDialog(this, "Pedido creado correctamente");}
-            
+                actualizarTabla();
+                actualizarProductos();
+                cont =0;
+                for(int a=0; a<modelTablaProds.getRowCount(); a++){
+                    modelTablaProds.removeRow(a);
+                }
         } catch (SQLException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
