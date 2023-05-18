@@ -863,27 +863,49 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         String sPedido = "INSERT INTO pedido VALUES(?,curdate(),curdate()+10,null,'Pendiente',null,?)";
         String sDetalle = "INSERT INTO detalle_pedido VALUES(?,?,?,?,?)";
         String sProducto = "UPDATE producto SET cantidad_en_stock=? WHERE codigo_producto =?";
+        String sStock = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto =?";
+        String sId = "SELECT * FROM pedido";
+        String sFecha = "SELECT curdate()";
+        String sFechaAprx = "SELECT curdate()+10";
+        String sCliente = "SELECT codigo_cliente FROM cliente WHERE nombre_cliente LIKE ?";
         
-        int id;
+        int id=0;
         int idClient;
         int cont=0;
-        
+        int cantProd=0;
         
         try {
+            Statement fecha = conexion.createStatement();
+            ResultSet fechaCreacion = fecha.executeQuery(sFecha);
+            fechaCreacion.next();
+            String date = fechaCreacion.getString(1);
+            Statement fechaAp = conexion.createStatement();
+            ResultSet fechaAprox = fechaAp.executeQuery(sFechaAprx);
+            fechaAprox.next();
+            String dateAprox = fechaAprox.getString(1);
+            
+            PreparedStatement cliente = conexion.prepareStatement(sCliente);
+            PreparedStatement selId = conexion.prepareStatement(sId, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             PreparedStatement pedido = conexion.prepareStatement(sPedido);
             PreparedStatement detalle = conexion.prepareStatement(sDetalle);
             PreparedStatement producto = conexion.prepareStatement(sProducto);
+            PreparedStatement stock = conexion.prepareStatement(sStock);
             
-            rs.last();
-            id = Integer.parseInt(rs.getString(1))+1;
-            rs.beforeFirst();
-            idClient = idCliente(String.valueOf(jComboClientes.getSelectedItem()));
+            String nombreClient = String.valueOf(jComboClientes.getSelectedItem());
+            cliente.setString(1, nombreClient);
+            ResultSet resultCliente = cliente.executeQuery();
+            resultCliente.next();
+            idClient = resultCliente.getInt(1);
+            
+            ResultSet sabId = selId.executeQuery();
+            sabId.last();
+            id = sabId.getInt(1)+1;
             pedido.setInt(1, id);
             pedido.setInt(2, idClient);
             
             
             
-            if(pedido.executeUpdate() > 0){System.out.println("1");cont++;}
+            if(pedido.executeUpdate() > 0){cont++;}
             
             for(int i=0; i<modelTablaProds.getRowCount(); i++){
                 detalle.setInt(1, id);
@@ -896,16 +918,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 detalle.setInt(5, i);
                 
                 
-                if(detalle.executeUpdate()>0){cont++;System.out.println("2");}
-                
-                int cantProd = Integer.parseInt(String.valueOf(modeloProductos.getValueAt(i, 3)))-cant;
+                if(detalle.executeUpdate()>0){cont++;}
+                stock.setString(1, idProd);
+                ResultSet cantEnStock = stock.executeQuery();
+                cantEnStock.next();
+                int cantidadStock = cantEnStock.getInt(1); 
+                System.out.println(cantidadStock+"");
+                cantProd = cantidadStock-cant;
                 producto.setInt(1, cantProd);
                 producto.setString(2, idProd);
                 
-                if(producto.executeUpdate()>0){cont++;System.out.println("3");}
+                if(producto.executeUpdate()>0){cont++;}
                 
             }
-                if(cont==3){JOptionPane.showMessageDialog(this, "Pedido creado correctamente");}
+                if(cont==3){
+                    JOptionPane.showMessageDialog(this, "Pedido creado correctamente");
+                    jTextID.setText(id+"");
+                    jTextFechaCreacion.setText(date);
+                    jTextFechaAprox.setText(dateAprox);
+                }
                 actualizarTabla();
                 actualizarProductos();
                 cont =0;
