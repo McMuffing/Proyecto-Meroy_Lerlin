@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
     
@@ -842,7 +843,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButtonMenosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMenosActionPerformed
         int cant = Integer.parseInt(String.valueOf(jTableArticulos.getValueAt(jTableArticulos.getSelectedRow(), 3)))-1;
-        DefaultTableModel modelo = modelTablaProds;
         jTableArticulos.setValueAt(cant, jTableArticulos.getSelectedRow(), 3);
     }//GEN-LAST:event_jButtonMenosActionPerformed
 
@@ -918,17 +918,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 detalle.setInt(5, i);
                 
                 
-                if(detalle.executeUpdate()>0){cont++;}
+                if(detalle.executeUpdate()>0 && cont==1){cont++;}
                 stock.setString(1, idProd);
                 ResultSet cantEnStock = stock.executeQuery();
                 cantEnStock.next();
                 int cantidadStock = cantEnStock.getInt(1); 
-                System.out.println(cantidadStock+"");
                 cantProd = cantidadStock-cant;
                 producto.setInt(1, cantProd);
                 producto.setString(2, idProd);
                 
-                if(producto.executeUpdate()>0){cont++;}
+                if(producto.executeUpdate()>0 && cont ==2){cont++;}
                 
             }
                 if(cont==3){
@@ -940,9 +939,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 actualizarTabla();
                 actualizarProductos();
                 cont =0;
-                for(int a=0; a<modelTablaProds.getRowCount(); a++){
-                    modelTablaProds.removeRow(a);
-                }
+                DefaultTableModel modeloTabla = (DefaultTableModel)jTableArticulos.getModel();
+                modeloTabla.setRowCount(0);
         } catch (SQLException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
