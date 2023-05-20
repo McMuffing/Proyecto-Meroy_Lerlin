@@ -12,6 +12,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     private Connection conexion;
     private String codigoPedido = "";
+    private String estadoPedido = "";
     private ResultSet rs;
     private ResultSet productos;
     private ResultSet clientes;
@@ -766,72 +767,81 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         // TODO add your handling code here:
-        Connection conexion = ConexionBD.getConexion();
+        int selectedRow = jTablePedidos.getSelectedRow();
+        if(selectedRow != -1){
+            codigoPedido = (String)jTablePedidos.getValueAt(selectedRow, 0);
+            estadoPedido = (String)jTablePedidos.getValueAt(selectedRow, 1);
+        }
         
-        PreparedStatement sentenciaDetallesPedido = null;
-        PreparedStatement sentenciaStock = null;
-        PreparedStatement sentenciaEliminarDetalles = null;
-        
-        try{
-            String sentenciaSQL = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ?";
-            String sentenciaSQL1 = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
-            String sentenciaSQL2 = "DELETE FROM detalle_pedido WHERE codigo_pedido LIKE ?";
-            
-            sentenciaDetallesPedido = conexion.prepareStatement(sentenciaSQL);
-            sentenciaStock = conexion.prepareStatement(sentenciaSQL1);
-            sentenciaEliminarDetalles = conexion.prepareStatement(sentenciaSQL2);
-            
-            sentenciaDetallesPedido.setString(1, codigoPedido);
-            
-            ResultSet rs = sentenciaDetallesPedido.executeQuery();
+        if (estadoPedido.equals("Rechazado") || estadoPedido.equals("Recibido") || estadoPedido.equals("Entregado")) {
+                JOptionPane.showMessageDialog(this, "El pedido no puede ser modificado porque ya ha sido entregado al cliente o rechazado por este mismo.", "ERROR CARGA DE PRODUCTOS DEL PEDIDO", JOptionPane.WARNING_MESSAGE);
+            } 
+            else {
+                PreparedStatement sentenciaDetallesPedido = null;
+                PreparedStatement sentenciaStock = null;
+                PreparedStatement sentenciaEliminarDetalles = null;
 
-            while(rs.next()){
-                String codigoProducto = rs.getString("codigo_producto");
-                int cantidadProducto = rs.getInt("cantidad");
-                
-                String codigoProductoActual = codigoProducto;
-                int cantidadActual = cantidadProducto;
-                
                 try{
-                    sentenciaStock.setInt(1, cantidadActual);
-                    sentenciaStock.setString(2, codigoProductoActual);
-                    sentenciaStock.executeUpdate();
+                    String sentenciaSQL = "SELECT * FROM detalle_pedido WHERE codigo_pedido LIKE ?";
+                    String sentenciaSQL1 = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
+                    String sentenciaSQL2 = "DELETE FROM detalle_pedido WHERE codigo_pedido LIKE ?";
+
+                    sentenciaDetallesPedido = conexion.prepareStatement(sentenciaSQL);
+                    sentenciaStock = conexion.prepareStatement(sentenciaSQL1);
+                    sentenciaEliminarDetalles = conexion.prepareStatement(sentenciaSQL2);
+
+                    sentenciaDetallesPedido.setString(1, codigoPedido);
+
+                    ResultSet rs = sentenciaDetallesPedido.executeQuery();
+
+                    while(rs.next()){
+                        String codigoProducto = rs.getString("codigo_producto");
+                        int cantidadProducto = rs.getInt("cantidad");
+
+                        String codigoProductoActual = codigoProducto;
+                        int cantidadActual = cantidadProducto;
+
+                        try{
+                            sentenciaStock.setInt(1, cantidadActual);
+                            sentenciaStock.setString(2, codigoProductoActual);
+                            sentenciaStock.executeUpdate();
+                        }
+                        catch(SQLException e){
+                            e.printStackTrace();
+                        }
+
+                        sentenciaEliminarDetalles.setString(1, codigoPedido);
+                        sentenciaEliminarDetalles.executeUpdate();
+                    }
+                    rs.close();
+                    sentenciaDetallesPedido.close();
+                    sentenciaStock.close();
+                    sentenciaEliminarDetalles.close();
                 }
                 catch(SQLException e){
                     e.printStackTrace();
+                } 
+                catch(Exception e){
+                    e.printStackTrace();
                 }
-                
-                sentenciaEliminarDetalles.setString(1, codigoPedido);
-                sentenciaEliminarDetalles.executeUpdate();
+
+                PreparedStatement sentenciaEliminarPedido = null;
+
+                try{
+                    String sentenciaSQL3 = "DELETE FROM pedido WHERE codigo_pedido LIKE ?";
+                    sentenciaEliminarPedido = conexion.prepareStatement(sentenciaSQL3);
+                    sentenciaEliminarPedido.setString(1, codigoPedido);
+                    sentenciaEliminarPedido.executeUpdate();
+                }
+                catch(SQLException e){
+                    e.printStackTrace();
+                } 
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+
+                actualizarTabla();
             }
-            rs.close();
-            sentenciaDetallesPedido.close();
-            sentenciaStock.close();
-            sentenciaEliminarDetalles.close();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        } 
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        
-        PreparedStatement sentenciaEliminarPedido = null;
-                
-        try{
-            String sentenciaSQL3 = "DELETE FROM pedido WHERE codigo_pedido LIKE ?";
-            sentenciaEliminarPedido = conexion.prepareStatement(sentenciaSQL3);
-            sentenciaEliminarPedido.setString(1, codigoPedido);
-            sentenciaEliminarPedido.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        } 
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        
-        actualizarTabla();
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     private void jTextIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextIDActionPerformed
