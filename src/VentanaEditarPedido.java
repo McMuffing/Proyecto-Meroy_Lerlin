@@ -110,7 +110,13 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableDetallesPedido = new javax.swing.JTable();
         jToggleButtonEliminarProducto = new javax.swing.JToggleButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        jPanelEditarCantidadProducto = new javax.swing.JPanel();
+        jLabelCodigoProducto = new javax.swing.JLabel();
+        jLabelCantidad = new javax.swing.JLabel();
+        jTextFieldCodigoProducto = new javax.swing.JTextField();
+        jTextFieldCantidadProducto = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jToggleButtonVolver = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,6 +181,11 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 "NUMERO LINEA:", "CODIGO PEDIDO:", "CODIGO PRODUCTO:", "CANTIDAD:", "PRECIO UNIDAD:"
             }
         ));
+        jTableDetallesPedido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableDetallesPedidoMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableDetallesPedido);
 
         jToggleButtonEliminarProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -185,16 +196,75 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
             }
         });
 
+        jPanelEditarCantidadProducto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "EDITAR CANTIDAD PRODUCTO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 15))); // NOI18N
+
+        jLabelCodigoProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelCodigoProducto.setText("CODIGO PRODUCTO:");
+
+        jLabelCantidad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelCantidad.setText("NUEVA CANTIDAD PRODUCTO:");
+
+        jTextFieldCodigoProducto.setEditable(false);
+        jTextFieldCodigoProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldCodigoProducto.setEnabled(false);
+
+        jTextFieldCantidadProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton1.setText("ACTUALIZAR CANTIDAD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelEditarCantidadProductoLayout = new javax.swing.GroupLayout(jPanelEditarCantidadProducto);
+        jPanelEditarCantidadProducto.setLayout(jPanelEditarCantidadProductoLayout);
+        jPanelEditarCantidadProductoLayout.setHorizontalGroup(
+            jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEditarCantidadProductoLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(jPanelEditarCantidadProductoLayout.createSequentialGroup()
+                        .addGroup(jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelCodigoProducto)
+                            .addComponent(jLabelCantidad))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldCodigoProducto)
+                            .addComponent(jTextFieldCantidadProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanelEditarCantidadProductoLayout.setVerticalGroup(
+            jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEditarCantidadProductoLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCodigoProducto)
+                    .addComponent(jTextFieldCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelEditarCantidadProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCantidad)
+                    .addComponent(jTextFieldCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanelProductosPedidoLayout = new javax.swing.GroupLayout(jPanelProductosPedido);
         jPanelProductosPedido.setLayout(jPanelProductosPedidoLayout);
         jPanelProductosPedidoLayout.setHorizontalGroup(
             jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelProductosPedidoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToggleButtonEliminarProducto)
+                .addGroup(jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanelProductosPedidoLayout.createSequentialGroup()
+                        .addComponent(jPanelEditarCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jToggleButtonEliminarProducto))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanelProductosPedidoLayout.setVerticalGroup(
             jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,15 +272,19 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButtonEliminarProducto)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGroup(jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelProductosPedidoLayout.createSequentialGroup()
+                        .addComponent(jToggleButtonEliminarProducto)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanelEditarCantidadProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        jToggleButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jToggleButton1.setText("VOLVER");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        jToggleButtonVolver.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jToggleButtonVolver.setText("VOLVER");
+        jToggleButtonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                jToggleButtonVolverActionPerformed(evt);
             }
         });
 
@@ -227,7 +301,7 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jToggleButton1)
+                .addComponent(jToggleButtonVolver)
                 .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
@@ -239,8 +313,8 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 .addComponent(jPanelPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanelProductosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
-                .addComponent(jToggleButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addComponent(jToggleButtonVolver)
                 .addGap(16, 16, 16))
         );
 
@@ -253,7 +327,6 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
            
         int selectedRow = jTablePedidos.getSelectedRow();
         if(selectedRow != -1){
-            // Obtener los valores de la fila seleccionada
             String codigoPedido = (String)jTablePedidos.getValueAt(selectedRow, 0);
             String estadoPedido = (String)jTablePedidos.getValueAt(selectedRow, 1);
 
@@ -271,7 +344,6 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
 
         int selectedRow = jTableDetallesPedido.getSelectedRow();
         if(selectedRow != -1){
-            // Obtener los valores de la fila seleccionada
             String codigoPedido = (String)jTableDetallesPedido.getValueAt(selectedRow, 1);
             String codigoProducto = (String)jTableDetallesPedido.getValueAt(selectedRow, 2);
             String cantidadProducto = (String)jTableDetallesPedido.getValueAt(selectedRow, 3);
@@ -328,14 +400,81 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jToggleButtonEliminarProductoActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void jToggleButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonVolverActionPerformed
         // TODO add your handling code here:
         VentanaPrincipal newFrame = new VentanaPrincipal();
         
         newFrame.setVisible(true);
         
         this.dispose();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_jToggleButtonVolverActionPerformed
+
+    private void jTableDetallesPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableDetallesPedidoMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = jTableDetallesPedido.getSelectedRow();
+
+        Object codProducto = jTableDetallesPedido.getValueAt(selectedRow, 2);
+
+        jTextFieldCodigoProducto.setText(codProducto.toString());
+    }//GEN-LAST:event_jTableDetallesPedidoMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String cantidadProducto = "";
+        
+        int selectedRow = jTableDetallesPedido.getSelectedRow();
+        if(selectedRow != -1){
+            String codigoPedido = (String)jTableDetallesPedido.getValueAt(selectedRow, 1);
+            cantidadProducto = (String)jTableDetallesPedido.getValueAt(selectedRow, 3);
+        }
+        
+        String codigoProducto = jTextFieldCodigoProducto.getText();
+        String nuevaCantidadProducto = jTextFieldCantidadProducto.getText();
+        
+        try{
+            String sentenciaSumarCantidadStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
+            PreparedStatement sentenciaActualizarStock = conexion.prepareStatement(sentenciaSumarCantidadStock);
+            sentenciaActualizarStock.setString(1, cantidadProducto);
+            sentenciaActualizarStock.setString(2, codigoProducto);
+            sentenciaActualizarStock.executeUpdate();
+            sentenciaActualizarStock.close();
+            
+            
+            String sentenciaConsultarCantidadStock = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
+            PreparedStatement sentenciaStock = conexion.prepareStatement(sentenciaConsultarCantidadStock);
+            sentenciaStock.setString(1, codigoProducto);
+
+            ResultSet rs = sentenciaStock.executeQuery();
+
+            String cantidadStockProducto = "";
+            while(rs.next()) {
+                cantidadStockProducto = rs.getString("cantidad_en_stock");
+            }
+
+            System.out.println(cantidadStockProducto);
+            sentenciaStock.close();
+            
+            
+            if(Integer.parseInt(nuevaCantidadProducto) > Integer.parseInt(cantidadStockProducto)){
+                JOptionPane.showMessageDialog(this, "La cantidad introducida es superior al stock disponible del producto.", "ERROR CANTIDAD PRODUCTO INVALIDA", JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                String sentenciaQuitarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock - ? WHERE codigo_producto = ?";
+                PreparedStatement sentenciaActualizarCantidadStock = conexion.prepareStatement(sentenciaQuitarStock);
+                sentenciaActualizarCantidadStock.setString(1, nuevaCantidadProducto);
+                sentenciaActualizarCantidadStock.setString(2, codigoProducto);
+                sentenciaActualizarCantidadStock.executeUpdate();
+                sentenciaActualizarCantidadStock.close();
+            }
+            System.out.println(cantidadStockProducto);
+            
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -373,15 +512,21 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabelCantidad;
+    private javax.swing.JLabel jLabelCodigoProducto;
     private javax.swing.JLabel jLabelNombreVentana;
+    private javax.swing.JPanel jPanelEditarCantidadProducto;
     private javax.swing.JPanel jPanelPedidos;
     private javax.swing.JPanel jPanelProductosPedido;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableDetallesPedido;
     private javax.swing.JTable jTablePedidos;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTextField jTextFieldCantidadProducto;
+    private javax.swing.JTextField jTextFieldCodigoProducto;
     private javax.swing.JToggleButton jToggleButtonEliminarProducto;
     private javax.swing.JToggleButton jToggleButtonMostrarProductos;
+    private javax.swing.JToggleButton jToggleButtonVolver;
     // End of variables declaration//GEN-END:variables
 }
