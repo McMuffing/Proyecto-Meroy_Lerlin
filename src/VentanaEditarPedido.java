@@ -21,7 +21,7 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
     private Connection conexion;
     private ResultSet rs;
 
-    public void actualizarTabla(){
+    public void actualizarTablaPedido(){
         try{
             Statement st = conexion.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = st.executeQuery("SELECT codigo_pedido, estado, fecha_pedido, fecha_esperada, fecha_entrega, comentarios FROM pedido ORDER BY codigo_pedido");
@@ -89,7 +89,7 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
         initComponents();
         
         conexion = ConexionBD.getConexion();
-        actualizarTabla();
+        actualizarTablaPedido();
     }
 
     /**
@@ -258,7 +258,7 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
             String estadoPedido = (String)jTablePedidos.getValueAt(selectedRow, 1);
 
             if (estadoPedido.equals("Rechazado") || estadoPedido.equals("Recibido") || estadoPedido.equals("Entregado")) {
-                JOptionPane.showMessageDialog(this, "El pedido no puede ser modificado porque ya ha sido entregado o rechazado por el cliente.", "ERROR CARGA DE PRODUCTOS", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El pedido no puede ser modificado porque ya ha sido entregado al cliente o rechazado por este mismo.", "ERROR CARGA DE PRODUCTOS DEL PEDIDO", JOptionPane.WARNING_MESSAGE);
             } 
             else {
                 actualizarTablaDetallesPedido(codigoPedido);
@@ -276,33 +276,54 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
             String codigoProducto = (String)jTableDetallesPedido.getValueAt(selectedRow, 2);
             String cantidadProducto = (String)jTableDetallesPedido.getValueAt(selectedRow, 3);
             
-            int confirmResult = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el producto que ha seleccionado?", "COMFIRMACION ELIMINAR PRODUCTO", JOptionPane.YES_NO_OPTION);
-            if(confirmResult == JOptionPane.YES_OPTION){
-                try{
-                    String sentenciaActualizarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
-                    PreparedStatement sentenciaSumarStock = conexion.prepareStatement(sentenciaActualizarStock);
-                    sentenciaSumarStock.setString(1, cantidadProducto);
-                    sentenciaSumarStock.setString(2, codigoProducto);
-                    sentenciaSumarStock.executeUpdate();
-                    sentenciaSumarStock.close();
+            try{
+                String contarFilas = "SELECT COUNT(*) FROM detalle_pedido WHERE codigo_pedido = ?";
+                PreparedStatement sentenciaContarFilas = conexion.prepareStatement(contarFilas);
+                sentenciaContarFilas.setString(1, codigoPedido);
+                ResultSet contarFilasResult = sentenciaContarFilas.executeQuery();
+                contarFilasResult.next();
+                int numeroFilas = contarFilasResult.getInt(1);
+                sentenciaContarFilas.close();
 
-                    String sentenciaEliminarProductoPedido = "DELETE FROM detalle_pedido WHERE codigo_pedido = ? AND codigo_producto = ?";
-                    PreparedStatement sentenciaEliminarProducto = conexion.prepareStatement(sentenciaEliminarProductoPedido);
-                    sentenciaEliminarProducto.setString(1, codigoPedido);
-                    sentenciaEliminarProducto.setString(2, codigoProducto);
-                    sentenciaEliminarProducto.executeUpdate();
-                    sentenciaEliminarProducto.close();  
-                } 
-                catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(numeroFilas == 1){
+                    JOptionPane.showMessageDialog(this, "El pedido no puede quedar sin productos.", "ERROR ELIMINAR PRODUCTO", JOptionPane.WARNING_MESSAGE);
+                    return;  // No se permite eliminar el producto
                 }
-                
-                actualizarTablaDetallesPedido(codigoPedido);
+                else{
+                    int confirmResult = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el producto que ha seleccionado?", "COMFIRMACION ELIMINAR PRODUCTO", JOptionPane.YES_NO_OPTION);
+                    if(confirmResult == JOptionPane.YES_OPTION){
+                        try{
+                            String sentenciaActualizarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
+                            PreparedStatement sentenciaSumarStock = conexion.prepareStatement(sentenciaActualizarStock);
+                            sentenciaSumarStock.setString(1, cantidadProducto);
+                            sentenciaSumarStock.setString(2, codigoProducto);
+                            sentenciaSumarStock.executeUpdate();
+                            sentenciaSumarStock.close();
+
+                            String sentenciaEliminarProductoPedido = "DELETE FROM detalle_pedido WHERE codigo_pedido = ? AND codigo_producto = ?";
+                            PreparedStatement sentenciaEliminarProducto = conexion.prepareStatement(sentenciaEliminarProductoPedido);
+                            sentenciaEliminarProducto.setString(1, codigoPedido);
+                            sentenciaEliminarProducto.setString(2, codigoProducto);
+                            sentenciaEliminarProducto.executeUpdate();
+                            sentenciaEliminarProducto.close();  
+                        } 
+                        catch (SQLException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        actualizarTablaDetallesPedido(codigoPedido);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Se ha cancelado la eliminación del pedido.");
+                    }
+                }
             }
-            else{
-                JOptionPane.showMessageDialog(this, "Se ha cancelado la eliminación del pedido.");
+            catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_jToggleButtonEliminarProductoActionPerformed
