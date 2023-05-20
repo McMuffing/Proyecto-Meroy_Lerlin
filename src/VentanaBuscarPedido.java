@@ -18,11 +18,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VentanaBuscarPedido extends javax.swing.JFrame {
 
-    /**
-     * Creates new form VentanaBuscarPedido
-     */
+    private Connection conexion;
+
     public VentanaBuscarPedido() {
         initComponents();
+        
+        conexion = ConexionBD.getConexion();
     }
 
     /**
@@ -235,7 +236,7 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "CANTIDAD", "CODIGO PEDIDO", "CODIGO PRODUCTO", "NUMERO LINEA", "PRECIO UNIDAD"
+                "NUMERO LINEA:", "CODIGO PEDIDO:", "CODIGO PRODUCTO:", "CANTIDAD:", "PRECIO UNIDAD:"
             }
         ));
         jTableDetallesPedido.setEnabled(false);
@@ -299,8 +300,6 @@ public class VentanaBuscarPedido extends javax.swing.JFrame {
 
     private void jButtonMostrarResultadosPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarResultadosPedidoActionPerformed
         // TODO add your handling code here:
-        Connection conexion = ConexionBD.getConexion();
-                
         PreparedStatement sentencia = null;
         
         String codigoPedido = jTextFieldCodigoPedido.getText();

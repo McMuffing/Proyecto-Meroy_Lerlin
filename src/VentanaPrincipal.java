@@ -334,7 +334,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButtonEditar.setLabel("EDITAR");
+        jButtonEditar.setText(" EDITAR PEDIDO");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jPanelNuevoPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "NUEVO PEDIDO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 20))); // NOI18N
         jPanelNuevoPedido.setName("Pedido Nuevo"); // NOI18N
@@ -945,6 +950,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonCrearPedidoActionPerformed
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        // TODO add your handling code here:
+        VentanaEditarPedido newFrame = new VentanaEditarPedido();
+        
+        newFrame.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_jButtonEditarActionPerformed
 
     /**
      * @param args the command line arguments

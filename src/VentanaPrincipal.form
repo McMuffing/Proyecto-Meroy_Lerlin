@@ -134,8 +134,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEditar">
       <Properties>
-        <Property name="label" type="java.lang.String" value="EDITAR"/>
+        <Property name="text" type="java.lang.String" value=" EDITAR PEDIDO"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditarActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanelNuevoPedido">
       <Properties>
