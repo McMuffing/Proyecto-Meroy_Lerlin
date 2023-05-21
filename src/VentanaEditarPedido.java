@@ -420,26 +420,22 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String cantidadProducto = "";
+        String codigoPedido = "";
+        String cantidadProductoPedido = "";
+        int sumaProductoStock = 0;
         
         int selectedRow = jTableDetallesPedido.getSelectedRow();
         if(selectedRow != -1){
-            String codigoPedido = (String)jTableDetallesPedido.getValueAt(selectedRow, 1);
-            cantidadProducto = (String)jTableDetallesPedido.getValueAt(selectedRow, 3);
+            codigoPedido = (String)jTableDetallesPedido.getValueAt(selectedRow, 1);
+            cantidadProductoPedido = (String)jTableDetallesPedido.getValueAt(selectedRow, 3);
         }
         
         String codigoProducto = jTextFieldCodigoProducto.getText();
         String nuevaCantidadProducto = jTextFieldCantidadProducto.getText();
         
+        int confirmResult = JOptionPane.showConfirmDialog(this, "¿Desea actualizar la cantidad actual del producto con codigo " + codigoProducto + " a la cantidad de: " + nuevaCantidadProducto + "?", "COMFIRMACION ACTUALIZAR CANTIDAD PRODUCTO", JOptionPane.YES_NO_OPTION);
+        if(confirmResult == JOptionPane.YES_OPTION){
         try{
-            String sentenciaSumarCantidadStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? WHERE codigo_producto = ?";
-            PreparedStatement sentenciaActualizarStock = conexion.prepareStatement(sentenciaSumarCantidadStock);
-            sentenciaActualizarStock.setString(1, cantidadProducto);
-            sentenciaActualizarStock.setString(2, codigoProducto);
-            sentenciaActualizarStock.executeUpdate();
-            sentenciaActualizarStock.close();
-            
-            
             String sentenciaConsultarCantidadStock = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
             PreparedStatement sentenciaStock = conexion.prepareStatement(sentenciaConsultarCantidadStock);
             sentenciaStock.setString(1, codigoProducto);
@@ -451,28 +447,39 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 cantidadStockProducto = rs.getString("cantidad_en_stock");
             }
 
-            System.out.println(cantidadStockProducto);
+            sumaProductoStock = Integer.parseInt(cantidadStockProducto) + Integer.parseInt(cantidadProductoPedido);
             sentenciaStock.close();
             
-            
-            if(Integer.parseInt(nuevaCantidadProducto) > Integer.parseInt(cantidadStockProducto)){
+            if(Integer.parseInt(nuevaCantidadProducto) > sumaProductoStock){
                 JOptionPane.showMessageDialog(this, "La cantidad introducida es superior al stock disponible del producto.", "ERROR CANTIDAD PRODUCTO INVALIDA", JOptionPane.WARNING_MESSAGE);
             }
             else{
-                String sentenciaQuitarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock - ? WHERE codigo_producto = ?";
+                String sentenciaQuitarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? - ? WHERE codigo_producto = ?";
                 PreparedStatement sentenciaActualizarCantidadStock = conexion.prepareStatement(sentenciaQuitarStock);
-                sentenciaActualizarCantidadStock.setString(1, nuevaCantidadProducto);
-                sentenciaActualizarCantidadStock.setString(2, codigoProducto);
+                sentenciaActualizarCantidadStock.setString(1, cantidadProductoPedido);
+                sentenciaActualizarCantidadStock.setString(2, nuevaCantidadProducto);
+                sentenciaActualizarCantidadStock.setString(3, codigoProducto);
                 sentenciaActualizarCantidadStock.executeUpdate();
                 sentenciaActualizarCantidadStock.close();
+                
+                String sentenciaActualizarProducto = "UPDATE detalle_pedido SET cantidad = ? WHERE codigo_pedido = ? AND codigo_producto LIKE ?";
+                PreparedStatement sentenciaAcualizarDetallesPedido = conexion.prepareStatement(sentenciaActualizarProducto);
+                sentenciaAcualizarDetallesPedido.setString(1, nuevaCantidadProducto);
+                sentenciaAcualizarDetallesPedido.setString(2, codigoPedido);
+                sentenciaAcualizarDetallesPedido.setString(3, codigoProducto);
+                sentenciaAcualizarDetallesPedido.executeUpdate();
+                sentenciaAcualizarDetallesPedido.close();
+                
+                JOptionPane.showMessageDialog(this, "La cantidad del producto con codigo " + codigoProducto + " ha sido actualizada correctamente.", "ACTUALIZACION CANTIDAD DE PRODUCTO", JOptionPane.INFORMATION_MESSAGE);
             }
-            System.out.println(cantidadStockProducto);
             
+            actualizarTablaDetallesPedido(codigoPedido);
         }
         catch(SQLException e){
             e.printStackTrace();
         }catch (Exception e){
             e.printStackTrace();
+        }
         }        
     }//GEN-LAST:event_jButton1ActionPerformed
 
