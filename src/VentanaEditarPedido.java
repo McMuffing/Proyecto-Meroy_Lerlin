@@ -1,4 +1,6 @@
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,7 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
 
     private Connection conexion;
     private ResultSet rs;
+    private String codigoPedido = "";
 
     public void actualizarTablaPedido(){
         try{
@@ -88,8 +91,34 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
     public VentanaEditarPedido(){
         initComponents();
         
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                cargarDatosEnComboBox();
+            }
+        });
+        
         conexion = ConexionBD.getConexion();
         actualizarTablaPedido();
+    }
+    
+    private void cargarDatosEnComboBox(){
+        try {
+            String consulta = "SELECT nombre FROM producto";
+            Statement senteciaComboBox = conexion.createStatement();
+            ResultSet resultSet = senteciaComboBox.executeQuery(consulta);
+
+            jComboBoxCodigosProducto.removeAllItems();
+
+            while(resultSet.next()) {
+                String dato = resultSet.getString("nombre");
+                jComboBoxCodigosProducto.addItem(dato);
+            }
+
+            senteciaComboBox.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -116,6 +145,12 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
         jTextFieldCodigoProducto = new javax.swing.JTextField();
         jTextFieldCantidadProducto = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jPanelAñadirProducto = new javax.swing.JPanel();
+        jComboBoxCodigosProducto = new javax.swing.JComboBox<>();
+        jLabelNombreProducto = new javax.swing.JLabel();
+        jLabelCantidadProducto = new javax.swing.JLabel();
+        jTextFieldCantidadNuevoProducto = new javax.swing.JTextField();
+        jToggleButtonAñadirProducto = new javax.swing.JToggleButton();
         jToggleButtonVolver = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -249,7 +284,61 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                     .addComponent(jTextFieldCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanelAñadirProducto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AÑADIR PRODUCTO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 15))); // NOI18N
+
+        jComboBoxCodigosProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jComboBoxCodigosProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabelNombreProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelNombreProducto.setText("PRODUCTO:");
+
+        jLabelCantidadProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelCantidadProducto.setText("CANTIDAD:");
+
+        jTextFieldCantidadNuevoProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jToggleButtonAñadirProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jToggleButtonAñadirProducto.setText("AÑADIR PRODUCTO");
+        jToggleButtonAñadirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonAñadirProductoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelAñadirProductoLayout = new javax.swing.GroupLayout(jPanelAñadirProducto);
+        jPanelAñadirProducto.setLayout(jPanelAñadirProductoLayout);
+        jPanelAñadirProductoLayout.setHorizontalGroup(
+            jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAñadirProductoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelAñadirProductoLayout.createSequentialGroup()
+                        .addGroup(jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelNombreProducto)
+                            .addComponent(jLabelCantidadProducto))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxCodigosProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldCantidadNuevoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jToggleButtonAñadirProducto))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelAñadirProductoLayout.setVerticalGroup(
+            jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAñadirProductoLayout.createSequentialGroup()
+                .addGroup(jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxCodigosProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelNombreProducto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelAñadirProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCantidadProducto)
+                    .addComponent(jTextFieldCantidadNuevoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jToggleButtonAñadirProducto)
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelProductosPedidoLayout = new javax.swing.GroupLayout(jPanelProductosPedido);
@@ -261,8 +350,12 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 .addGroup(jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanelProductosPedidoLayout.createSequentialGroup()
                         .addComponent(jPanelEditarCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jToggleButtonEliminarProducto))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelProductosPedidoLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jToggleButtonEliminarProducto))
+                            .addComponent(jPanelAñadirProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -275,7 +368,8 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 .addGroup(jPanelProductosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelProductosPedidoLayout.createSequentialGroup()
                         .addComponent(jToggleButtonEliminarProducto)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanelAñadirProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanelEditarCantidadProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -302,7 +396,7 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jToggleButtonVolver)
-                .addGap(34, 34, 34))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,9 +407,9 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
                 .addComponent(jPanelPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanelProductosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jToggleButtonVolver)
-                .addGap(16, 16, 16))
+                .addGap(10, 10, 10))
         );
 
         pack();
@@ -435,53 +529,152 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
         
         int confirmResult = JOptionPane.showConfirmDialog(this, "¿Desea actualizar la cantidad actual del producto con codigo " + codigoProducto + " a la cantidad de: " + nuevaCantidadProducto + "?", "COMFIRMACION ACTUALIZAR CANTIDAD PRODUCTO", JOptionPane.YES_NO_OPTION);
         if(confirmResult == JOptionPane.YES_OPTION){
+            try{
+                String sentenciaConsultarCantidadStock = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
+                PreparedStatement sentenciaStock = conexion.prepareStatement(sentenciaConsultarCantidadStock);
+                sentenciaStock.setString(1, codigoProducto);
+
+                ResultSet rs = sentenciaStock.executeQuery();
+
+                String cantidadStockProducto = "";
+                while(rs.next()) {
+                    cantidadStockProducto = rs.getString("cantidad_en_stock");
+                }
+
+                sumaProductoStock = Integer.parseInt(cantidadStockProducto) + Integer.parseInt(cantidadProductoPedido);
+                sentenciaStock.close();
+
+                if(Integer.parseInt(nuevaCantidadProducto) > sumaProductoStock){
+                    JOptionPane.showMessageDialog(this, "La cantidad introducida es superior al stock disponible del producto.", "ERROR CANTIDAD PRODUCTO INVALIDA", JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    String sentenciaQuitarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? - ? WHERE codigo_producto = ?";
+                    PreparedStatement sentenciaActualizarCantidadStock = conexion.prepareStatement(sentenciaQuitarStock);
+                    sentenciaActualizarCantidadStock.setString(1, cantidadProductoPedido);
+                    sentenciaActualizarCantidadStock.setString(2, nuevaCantidadProducto);
+                    sentenciaActualizarCantidadStock.setString(3, codigoProducto);
+                    sentenciaActualizarCantidadStock.executeUpdate();
+                    sentenciaActualizarCantidadStock.close();
+
+                    String sentenciaActualizarProducto = "UPDATE detalle_pedido SET cantidad = ? WHERE codigo_pedido = ? AND codigo_producto LIKE ?";
+                    PreparedStatement sentenciaAcualizarDetallesPedido = conexion.prepareStatement(sentenciaActualizarProducto);
+                    sentenciaAcualizarDetallesPedido.setString(1, nuevaCantidadProducto);
+                    sentenciaAcualizarDetallesPedido.setString(2, codigoPedido);
+                    sentenciaAcualizarDetallesPedido.setString(3, codigoProducto);
+                    sentenciaAcualizarDetallesPedido.executeUpdate();
+                    sentenciaAcualizarDetallesPedido.close();
+
+                    JOptionPane.showMessageDialog(this, "La cantidad del producto con codigo " + codigoProducto + " ha sido actualizada correctamente.", "ACTUALIZACION CANTIDAD DE PRODUCTO", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                actualizarTablaDetallesPedido(codigoPedido);
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jToggleButtonAñadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonAñadirProductoActionPerformed
+        // TODO add your handling code here:
+        String nombreProducto = jComboBoxCodigosProducto.getSelectedItem().toString();
+        String cantidadNuevoProducto = jTextFieldCantidadNuevoProducto.getText();
+        String codigoProducto = "";
+        Double precioUnidad = 0.0;
+        String codigoPedido = "";
+        
+        int selectedRow = jTablePedidos.getSelectedRow();
+        if(selectedRow != -1){
+            codigoPedido = (String)jTablePedidos.getValueAt(selectedRow, 0);
+        }
+        
         try{
-            String sentenciaConsultarCantidadStock = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
-            PreparedStatement sentenciaStock = conexion.prepareStatement(sentenciaConsultarCantidadStock);
-            sentenciaStock.setString(1, codigoProducto);
+            String consultaCodigoProducto = "SELECT codigo_producto FROM producto WHERE nombre = ?";
+            PreparedStatement sentenciaConsultarCodigo = conexion.prepareStatement(consultaCodigoProducto);
+            sentenciaConsultarCodigo.setString(1, nombreProducto);
 
-            ResultSet rs = sentenciaStock.executeQuery();
+            ResultSet rs = sentenciaConsultarCodigo.executeQuery();
 
+            if(rs.next()){
+                codigoProducto = rs.getString("codigo_producto");
+            }
+            sentenciaConsultarCodigo.close();
+            
+            String consultaNumeroLinea = "SELECT MAX(numero_linea) FROM detalle_pedido WHERE codigo_pedido = ?";
+            PreparedStatement sentenciaConsultarNumeroLinea = conexion.prepareStatement(consultaNumeroLinea);
+            sentenciaConsultarNumeroLinea.setString(1, codigoPedido);
+            rs = sentenciaConsultarNumeroLinea.executeQuery();
+
+            int numeroLinea = 1;
+
+            if(rs.next()){
+                int maxNumeroLinea = rs.getInt(1);
+                numeroLinea = maxNumeroLinea + 1;
+            }
+
+            sentenciaConsultarNumeroLinea.close();
+            
+            
+            
+            String consultaPrecioProducto = "SELECT precio_venta FROM producto WHERE nombre = ?";
+            PreparedStatement sentenciaConsultarPrecio = conexion.prepareStatement(consultaPrecioProducto);
+            sentenciaConsultarPrecio.setString(1, nombreProducto);
+            rs = sentenciaConsultarPrecio.executeQuery();
+
+            if (rs.next()) {
+                precioUnidad = rs.getDouble("precio_venta");
+            }
+
+            sentenciaConsultarPrecio.close();
+            
+            String sentenciaConsultarCantidadProductStock = "SELECT cantidad_en_stock FROM producto WHERE codigo_producto = ?";
+            PreparedStatement sentenciaConsultaProductoStock = conexion.prepareStatement(sentenciaConsultarCantidadProductStock);
+            sentenciaConsultaProductoStock.setString(1, codigoProducto);
+            rs = sentenciaConsultaProductoStock.executeQuery();
+            
             String cantidadStockProducto = "";
             while(rs.next()) {
                 cantidadStockProducto = rs.getString("cantidad_en_stock");
             }
+            
+            sentenciaConsultaProductoStock.close();
+       
+            if(Integer.parseInt(cantidadNuevoProducto) > Integer.parseInt(cantidadStockProducto)){
+                    JOptionPane.showMessageDialog(this, "La cantidad introducida es superior al stock disponible del producto.", "ERROR CANTIDAD PRODUCTO INVALIDA", JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    String sentenciaQuitarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock - ? WHERE codigo_producto = ?";
+                    PreparedStatement sentenciaActualizarCantidadStock = conexion.prepareStatement(sentenciaQuitarStock);
+                    sentenciaActualizarCantidadStock.setString(1, cantidadNuevoProducto);
+                    sentenciaActualizarCantidadStock.setString(2, codigoProducto);
+                    sentenciaActualizarCantidadStock.executeUpdate();
+                    sentenciaActualizarCantidadStock.close();
+                
+                    int cantProducto = Integer.parseInt(cantidadNuevoProducto);
+                    
+                    String insertarCaposNuevoProducto = "INSERT INTO detalle_pedido (codigo_pedido, codigo_producto, cantidad, precio_unidad, numero_linea) VALUES (?, ?, ?, ?, ?)";
+                    PreparedStatement sentenciaInsertarProducto = conexion.prepareStatement(insertarCaposNuevoProducto);
+                    sentenciaInsertarProducto.setString(1, codigoPedido);
+                    sentenciaInsertarProducto.setString(2, codigoProducto);
+                    sentenciaInsertarProducto.setInt(3, cantProducto);
+                    sentenciaInsertarProducto.setDouble(4, precioUnidad);
+                    sentenciaInsertarProducto.setInt(5, numeroLinea);
+                    sentenciaInsertarProducto.executeUpdate();
+                    sentenciaInsertarProducto.close();
 
-            sumaProductoStock = Integer.parseInt(cantidadStockProducto) + Integer.parseInt(cantidadProductoPedido);
-            sentenciaStock.close();
-            
-            if(Integer.parseInt(nuevaCantidadProducto) > sumaProductoStock){
-                JOptionPane.showMessageDialog(this, "La cantidad introducida es superior al stock disponible del producto.", "ERROR CANTIDAD PRODUCTO INVALIDA", JOptionPane.WARNING_MESSAGE);
-            }
-            else{
-                String sentenciaQuitarStock = "UPDATE producto SET cantidad_en_stock = cantidad_en_stock + ? - ? WHERE codigo_producto = ?";
-                PreparedStatement sentenciaActualizarCantidadStock = conexion.prepareStatement(sentenciaQuitarStock);
-                sentenciaActualizarCantidadStock.setString(1, cantidadProductoPedido);
-                sentenciaActualizarCantidadStock.setString(2, nuevaCantidadProducto);
-                sentenciaActualizarCantidadStock.setString(3, codigoProducto);
-                sentenciaActualizarCantidadStock.executeUpdate();
-                sentenciaActualizarCantidadStock.close();
-                
-                String sentenciaActualizarProducto = "UPDATE detalle_pedido SET cantidad = ? WHERE codigo_pedido = ? AND codigo_producto LIKE ?";
-                PreparedStatement sentenciaAcualizarDetallesPedido = conexion.prepareStatement(sentenciaActualizarProducto);
-                sentenciaAcualizarDetallesPedido.setString(1, nuevaCantidadProducto);
-                sentenciaAcualizarDetallesPedido.setString(2, codigoPedido);
-                sentenciaAcualizarDetallesPedido.setString(3, codigoProducto);
-                sentenciaAcualizarDetallesPedido.executeUpdate();
-                sentenciaAcualizarDetallesPedido.close();
-                
-                JOptionPane.showMessageDialog(this, "La cantidad del producto con codigo " + codigoProducto + " ha sido actualizada correctamente.", "ACTUALIZACION CANTIDAD DE PRODUCTO", JOptionPane.INFORMATION_MESSAGE);
-            }
-            
-            actualizarTablaDetallesPedido(codigoPedido);
+                    JOptionPane.showMessageDialog(this, "Se ha introducido un producto nuevo al pedido correctamente.", "NUEVO PRODUCTO AÑADIDO AL PEDIDO", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                actualizarTablaDetallesPedido(codigoPedido);
         }
         catch(SQLException e){
             e.printStackTrace();
         }catch (Exception e){
             e.printStackTrace();
         }
-        }        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jToggleButtonAñadirProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -520,9 +713,13 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBoxCodigosProducto;
     private javax.swing.JLabel jLabelCantidad;
+    private javax.swing.JLabel jLabelCantidadProducto;
     private javax.swing.JLabel jLabelCodigoProducto;
+    private javax.swing.JLabel jLabelNombreProducto;
     private javax.swing.JLabel jLabelNombreVentana;
+    private javax.swing.JPanel jPanelAñadirProducto;
     private javax.swing.JPanel jPanelEditarCantidadProducto;
     private javax.swing.JPanel jPanelPedidos;
     private javax.swing.JPanel jPanelProductosPedido;
@@ -530,8 +727,10 @@ public class VentanaEditarPedido extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableDetallesPedido;
     private javax.swing.JTable jTablePedidos;
+    private javax.swing.JTextField jTextFieldCantidadNuevoProducto;
     private javax.swing.JTextField jTextFieldCantidadProducto;
     private javax.swing.JTextField jTextFieldCodigoProducto;
+    private javax.swing.JToggleButton jToggleButtonAñadirProducto;
     private javax.swing.JToggleButton jToggleButtonEliminarProducto;
     private javax.swing.JToggleButton jToggleButtonMostrarProductos;
     private javax.swing.JToggleButton jToggleButtonVolver;
